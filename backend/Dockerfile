@@ -1,11 +1,12 @@
-FROM python:3.12-slim
+# Not -slim: the slim image's trimmed-down OpenSSL/cert stack caused every
+# MongoDB Atlas connection to fail at the TLS handshake with
+# "SSL: TLSV1_ALERT_INTERNAL_ERROR" (confirmed in production — the identical
+# connection string worked fine from outside the container). Switching off
+# -slim fixed it.
+FROM python:3.12
 
 WORKDIR /app
 
-# ca-certificates: the base image's bundle is frequently stale, which makes
-# the TLS handshake to MongoDB Atlas fail with "SSL: TLSV1_ALERT_INTERNAL_ERROR"
-# (seen in production — not hypothetical). update-ca-certificates refreshes it
-# from Debian's current root store.
 RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && update-ca-certificates && rm -rf /var/lib/apt/lists/*
 
 # System deps are usually unnecessary (bcrypt/cryptography/pillow ship
