@@ -2,6 +2,12 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
+# ca-certificates: the base image's bundle is frequently stale, which makes
+# the TLS handshake to MongoDB Atlas fail with "SSL: TLSV1_ALERT_INTERNAL_ERROR"
+# (seen in production — not hypothetical). update-ca-certificates refreshes it
+# from Debian's current root store.
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates && update-ca-certificates && rm -rf /var/lib/apt/lists/*
+
 # System deps are usually unnecessary (bcrypt/cryptography/pillow ship
 # manylinux wheels), but build tools are a safe fallback if a wheel is
 # missing for your platform — uncomment if `pip install` fails below.
