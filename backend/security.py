@@ -8,6 +8,7 @@ from typing import Optional
 
 import bcrypt
 import bleach
+import certifi
 import jwt
 from fastapi import Depends, HTTPException, Request
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -18,7 +19,15 @@ import config
 logger = logging.getLogger("zebick.security")
 
 # --- DB singleton ---
-client = AsyncIOMotorClient(config.MONGO_URL)
+# mongodb+srv:// (Atlas) always uses TLS — pin tlsCAFile to certifi's bundle
+# there instead of relying on the OS trust store, since some minimal Docker
+# base images (e.g. python:3.12-slim) ship a stale/incomplete ca-certificates
+# package, which makes the handshake fail with "SSL: TLSV1_ALERT_INTERNAL_ERROR".
+# Plain mongodb:// (local dev, no TLS) must NOT get tlsCAFile — passing any
+# tls* option to pymongo implicitly turns TLS on, which breaks a local,
+# unencrypted MongoDB.
+_mongo_kwargs = {"tlsCAFile": certifi.where()} if config.MONGO_URL.startswith("mongodb+srv://") else {}
+client = AsyncIOMotorClient(config.MONGO_URL, **_mongo_kwargs)
 db = client[config.DB_NAME]
 
 # --- Auth scheme ---
