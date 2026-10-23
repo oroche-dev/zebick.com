@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field, ConfigDict, field_validator
 
-from security import db, audit_log, get_current_user, sanitize_text
+from security import db, audit_log, get_current_user, require_crm_access, sanitize_text
 
 logger = logging.getLogger("zebick.catalog")
 router = APIRouter(prefix="/api")
@@ -372,12 +372,12 @@ async def admin_chatbot_config_update(
 
 
 @router.get("/admin/chatbot/leads")
-async def admin_chatbot_leads(current: dict = Depends(get_current_user)):
+async def admin_chatbot_leads(current: dict = Depends(require_crm_access)):
     rows = await db.chatbot_leads.find({}, {"_id": 0}).sort("created_at", -1).limit(500).to_list(500)
     return {"total": len(rows), "leads": rows}
 
 
 @router.get("/admin/chatbot/conversations")
-async def admin_chatbot_conversations(current: dict = Depends(get_current_user)):
+async def admin_chatbot_conversations(current: dict = Depends(require_crm_access)):
     rows = await db.chat_history.find({}, {"_id": 0}).sort("timestamp", -1).limit(200).to_list(200)
     return {"total": len(rows), "conversations": rows}

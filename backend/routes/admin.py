@@ -529,7 +529,7 @@ async def send_manual_email_to_contact(
 
 
 @router.post("/send-email")
-async def send_adhoc_email(payload: AdHocEmailSend, request: Request, current: dict = Depends(get_current_user)):
+async def send_adhoc_email(payload: AdHocEmailSend, request: Request, current: dict = Depends(require_crm_access)):
     """Ad-hoc send used by the admin 'E-Mail Templates' tool: an arbitrary
     HTML email to any address, not tied to an existing contact record."""
     from services import send_email
