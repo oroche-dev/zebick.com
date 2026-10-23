@@ -1,0 +1,894 @@
+/* ==========================================
+   COMPLETE RESPONSIVE OVERHAUL - v2
+   Mobile-First Approach
+   ========================================== */
+
+/* Base Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* ==========================================
+   MOBILE STYLES (max-width: 768px)
+   ========================================== */
+@media screen and (max-width: 768px) {
+  /* Container */
+  .container {
+    padding: 0 var(--space-4) !important;
+    max-width: 100% !important;
+  }
+  
+  /* Typography */
+  h1, .heading-1, .heading-display {
+    font-size: clamp(28px, 8vw, 42px) !important;
+    line-height: 1.15 !important;
+  }
+  
+  h2, .heading-2 {
+    font-size: clamp(24px, 6vw, 36px) !important;
+    line-height: 1.2 !important;
+  }
+  
+  h3, .heading-3 {
+    font-size: clamp(18px, 4vw, 24px) !important;
+    line-height: 1.3 !important;
+  }
+  
+  p {
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+  }
+  
+  /* Header Mobile */
+  header {
+    display: block !important;
+  }
+  
+  .header-inner {
+    height: 60px !important;
+    padding: 0 16px !important;
+  }
+  
+  .logo img {
+    height: 40px !important;
+  }
+  
+  .nav-desktop,
+  .desktop-nav {
+    display: none !important;
+  }
+  
+  .header-cta,
+  .desktop-cta {
+    display: none !important;
+  }
+  
+  .mobile-menu-btn,
+  .mobile-menu-toggle {
+    display: flex !important;
+  }
+  
+  /* Hero Section Mobile */
+  .hero {
+    min-height: auto !important;
+    padding: var(--space-20) var(--space-4) var(--space-12) !important;
+  }
+  
+  .hero-content {
+    text-align: center;
+  }
+  
+  .hero-badge {
+    margin-bottom: 24px !important;
+    padding: 10px 16px !important;
+    font-size: 12px !important;
+  }
+  
+  /* Hide decorative elements (heavy float animations only; let dim ambient stay) */
+  .grid-pattern,
+  .floating-orb,
+  [class*="hide-mobile"] {
+    display: none !important;
+  }
+  
+  /* Hide heavy animation effects on mobile (perf) */
+  [style*="animation: float"],
+  [style*="animation: floatOrb"],
+  [style*="animation: morphFloat"] {
+    display: none !important;
+  }
+  
+  /* Buttons Mobile (only true btn classes — never full-bleed every nested link) */
+  .btn-primary,
+  .btn-secondary {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 14px 24px !important;
+    font-size: 14px !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+  }
+  
+  /* Button Container Stack */
+  .hero-buttons,
+  .cta-buttons,
+  [class*="buttons"] {
+    flex-direction: column !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+  
+  /* Stack Mobile Helper */
+  .stack-mobile {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  
+  /* Sections — vertical rhythm only. Horizontal padding is each section's
+     own concern (either its .container child, or its own inline padding);
+     using the `padding` shorthand here would zero that out as a side
+     effect, pushing content edge-to-edge on mobile. */
+  .section,
+  section {
+    padding-top: var(--space-12) !important;
+    padding-bottom: var(--space-12) !important;
+  }
+  
+  /* Section Labels */
+  .section-label {
+    font-size: 10px !important;
+    padding: 6px 12px !important;
+  }
+  
+  /* Grid Systems - Single Column unless explicitly opted out */
+  [style*="grid-template-columns: repeat"]:not(.keep-grid):not([data-keep-grid]),
+  [style*="gridTemplateColumns: repeat"]:not(.keep-grid):not([data-keep-grid]),
+  .grid-responsive,
+  .grid-2,
+  .grid-3,
+  .grid-4 {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+  
+  /* (do NOT blanket-stack every grid — was too aggressive, broke editorial 2-col layouts) */
+  
+  /* Cards Mobile */
+  .card,
+  [class*="card"],
+  .glass-card,
+  .glow-card {
+    padding: 20px !important;
+    border-radius: 16px !important;
+  }
+  
+  /* Stats - 2 Columns */
+  .hero-stats,
+  .stats-row {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+  }
+  
+  .stat-value {
+    font-size: 32px !important;
+  }
+  
+  .stat-label {
+    font-size: 12px !important;
+  }
+  
+  /* Tech Stack pill rows - wrap cleanly on mobile (no horizontal blowout) */
+  [data-testid="tech-stack-section"] [style*="display: flex"][style*="gap"] {
+    flex-wrap: wrap !important;
+    overflow-x: visible !important;
+    justify-content: flex-start !important;
+    min-width: 0 !important;
+  }
+  
+  [data-testid="tech-stack-section"] [style*="display: flex"][style*="gap"]::-webkit-scrollbar {
+    display: none;
+  }
+  
+  [data-testid="tech-stack-section"] button {
+    flex-shrink: 0 !important;
+    padding: 10px 16px !important;
+    font-size: 12px !important;
+  }
+  
+  /* Portfolio Bento Grid - Single Column */
+  [data-testid="portfolio-showcase"] [style*="grid-template-columns: repeat(12"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+  
+  [data-testid="portfolio-showcase"] [style*="gridColumn: span"],
+  [data-testid="portfolio-showcase"] [style*="grid-column: span"] {
+    grid-column: span 1 !important;
+    min-height: 280px !important;
+  }
+  
+  /* About Section - Stack */
+  [data-testid="about-us-section"] [style*="grid-template-columns"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 32px !important;
+  }
+  
+  /* Values Grid - 2x2 */
+  [data-testid="about-us-section"] [style*="display: flex"][style*="gap: 32px"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 16px !important;
+  }
+  
+  /* Testimonials - Single Column */
+  [style*="grid-template-columns: repeat(3, 1fr)"]:not(.keep-grid):not([data-keep-grid]) {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+  
+  /* Filter buttons – horizontally scrollable when many */
+  .scroll-filters,
+  [style*="overflow-x: auto"] {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  
+  /* Process Steps - Vertical */
+  [style*="grid-template-columns: repeat(4, 1fr)"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+  
+  /* Process Step Circle */
+  [data-testid^="process-step"] {
+    text-align: center !important;
+  }
+  
+  [data-testid^="process-step"] [style*="width: 120px"] {
+    width: 80px !important;
+    height: 80px !important;
+    margin: 0 auto 20px !important;
+  }
+  
+  /* Connecting Line Hidden */
+  [style*="position: absolute"][style*="height: 2px"][style*="background: linear-gradient"] {
+    display: none !important;
+  }
+  
+  /* Footer Mobile */
+  footer,
+  .footer {
+    padding: 40px 16px !important;
+  }
+  
+  footer [style*="grid-template-columns"],
+  .footer-grid {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 32px !important;
+  }
+  
+  .footer-bottom {
+    flex-direction: column !important;
+    gap: 16px !important;
+    text-align: center !important;
+  }
+  
+  .footer-legal {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+  
+  /* Icons - Smaller */
+  [style*="width: 72px"][style*="height: 72px"],
+  [style*="width: 64px"][style*="height: 64px"] {
+    width: 48px !important;
+    height: 48px !important;
+  }
+  
+  [style*="width: 120px"][style*="height: 120px"],
+  [style*="width: 100px"][style*="height: 100px"] {
+    width: 64px !important;
+    height: 64px !important;
+  }
+  
+  /* Certifications Row - Wrap */
+  [style*="display: flex"][style*="gap: 48px"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 12px !important;
+  }
+  
+  /* Two Column Content - Stack */
+  [style*="grid-template-columns: 1fr 1.2fr"],
+  [style*="grid-template-columns: 1fr 1.5fr"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+  }
+  
+  /* (intentionally NOT forcing every left-aligned text to center on mobile —
+     editorial layouts read better when they keep their natural alignment) */
+  
+  /* Hide second column decorative content on mobile */
+  [data-testid="about-us-section"] > div > div > div:last-child [style*="position: absolute"] {
+    display: none !important;
+  }
+  
+  /* Chatbot Mobile */
+  .chatbot-button {
+    bottom: 16px !important;
+    right: 16px !important;
+    width: 50px !important;
+    height: 50px !important;
+  }
+  
+  .chatbot-window {
+    width: calc(100vw - 24px) !important;
+    right: 12px !important;
+    bottom: 80px !important;
+    height: calc(100vh - 120px) !important;
+    max-height: 500px !important;
+  }
+}
+
+/* ==========================================
+   TABLET STYLES (769px - 1024px)
+   ========================================== */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    padding: 0 var(--space-6) !important;
+    max-width: 960px !important;
+  }
+
+  h1, .heading-1 {
+    font-size: clamp(36px, 5vw, 52px) !important;
+  }
+
+  .hero {
+    padding: 100px var(--space-6) 60px !important;
+  }
+
+  .section,
+  section {
+    padding-top: var(--space-20) !important;
+    padding-bottom: var(--space-20) !important;
+  }
+  
+  /* 2 Column Grids */
+  [style*="grid-template-columns: repeat(3"],
+  [style*="grid-template-columns: repeat(4"],
+  [style*="grid-template-columns: repeat(12"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  /* Portfolio Grid - 2 columns */
+  [data-testid="portfolio-showcase"] [style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
+  }
+  
+  [data-testid="portfolio-showcase"] [style*="gridColumn: span 8"],
+  [data-testid="portfolio-showcase"] [style*="grid-column: span 8"] {
+    grid-column: span 2 !important;
+  }
+  
+  /* Tech Stack - Stack on Tablet */
+  [data-testid="tech-stack-section"] [style*="grid-template-columns: 1fr 1.5fr"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 32px !important;
+  }
+  
+  /* Process Steps - 2x2 */
+  [style*="grid-template-columns: repeat(4, 1fr)"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 32px !important;
+  }
+  
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ==========================================
+   LAPTOP STYLES (1025px - 1280px)
+   ========================================== */
+@media screen and (min-width: 1025px) and (max-width: 1280px) {
+  .container {
+    padding: 0 var(--space-12) !important;
+    max-width: 1200px !important;
+  }
+
+  .hero {
+    padding: 120px var(--space-12) 80px !important;
+  }
+
+  .section,
+  section {
+    padding-top: 100px !important;
+    padding-bottom: 100px !important;
+  }
+
+  /* 3 Column */
+  [style*="grid-template-columns: repeat(4"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+/* ==========================================
+   DESKTOP STYLES (1281px+)
+   ========================================== */
+@media screen and (min-width: 1281px) {
+  .container {
+    padding: 0 var(--space-20) !important;
+    max-width: var(--container-max) !important;
+  }
+
+  .hero {
+    padding: 140px var(--space-20) 100px !important;
+  }
+
+  .section,
+  section {
+    padding-top: var(--space-30) !important;
+    padding-bottom: var(--space-30) !important;
+  }
+}
+
+/* ==========================================
+   HEIGHT-BASED RESPONSIVE
+   ========================================== */
+@media screen and (max-height: 700px) {
+  .hero {
+    min-height: auto !important;
+    padding-top: 80px !important;
+    padding-bottom: 40px !important;
+  }
+}
+
+@media screen and (max-height: 500px) and (orientation: landscape) {
+  .hero {
+    padding: 60px 24px 30px !important;
+  }
+  
+  h1 {
+    font-size: 28px !important;
+  }
+}
+
+/* ==========================================
+   TOUCH DEVICE OPTIMIZATION
+   ========================================== */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover transforms on touch */
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .card:hover,
+  .glass-card:hover,
+  .glow-card:hover,
+  [class*="card"]:hover {
+    transform: none !important;
+  }
+  
+  /* Larger touch targets */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+  }
+  
+  /* Prevent iOS zoom */
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* ==========================================
+   UTILITY CLASSES
+   ========================================== */
+.hide-mobile {
+  display: block;
+}
+
+.show-mobile {
+  display: none !important;
+}
+
+@media screen and (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+  
+  .show-mobile {
+    display: block !important;
+  }
+}
+
+.text-center-mobile {
+  text-align: inherit;
+}
+
+@media screen and (max-width: 768px) {
+  .text-center-mobile {
+    text-align: center !important;
+  }
+}
+
+.full-width-mobile {
+  width: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .full-width-mobile {
+    width: 100% !important;
+  }
+}
+
+/* Safe Area for Notched Devices */
+@supports (padding: max(0px)) {
+  .header-inner {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+  
+  footer {
+    padding-bottom: max(40px, env(safe-area-inset-bottom));
+  }
+}
+
+/* Print Styles */
+@media print {
+  .hero {
+    min-height: auto;
+    page-break-after: always;
+  }
+  
+  nav,
+  footer,
+  .chatbot,
+  .mobile-menu {
+    display: none !important;
+  }
+}
+
+/* ==========================================
+   GLOBAL MOBILE POLISH (Jan 2026)
+   Final pass — safety nets + tap-target +
+   typography polish across the WHOLE site.
+   ========================================== */
+
+/* Absolute safety net against horizontal scroll */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* Phone (≤ 768px) — Touch targets + polish */
+@media screen and (max-width: 768px) {
+
+  /* All buttons must have minimum 44x44 touch target */
+  button,
+  a.btn-primary,
+  a.btn-secondary,
+  .btn-primary,
+  .btn-secondary,
+  [role="button"] {
+    min-height: 44px !important;
+  }
+
+  /* Form inputs - prevent iOS auto-zoom (font-size ≥ 16px) */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="url"],
+  input[type="password"],
+  input[type="number"],
+  input[type="search"],
+  textarea,
+  select {
+    font-size: 16px !important;
+    min-height: 48px;
+  }
+  textarea {
+    min-height: 96px;
+  }
+
+  /* Mobile menu / nav links – larger tap targets */
+  .mobile-menu a,
+  .mobile-menu button,
+  nav a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Cards — consistent inner padding so content never touches edges */
+  .glass-card,
+  .glass-card-static,
+  .glow-card {
+    padding: 20px !important;
+  }
+
+  /* Fix common large-padding-card overflow issues */
+  [style*="padding: 60px"],
+  [style*="padding: 56px"],
+  [style*="padding: 48px"],
+  [style*="padding: 40px"] {
+    padding: 24px !important;
+  }
+
+  /* Inline grids using minmax should collapse to safe minimum */
+  [style*="minmax(320px"],
+  [style*="minmax(300px"],
+  [style*="minmax(280px"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Section internal spacing tightening — only for sections that actually
+     use the .container pattern (container supplies the side padding, so
+     the section's own padding would double up). Sections that put their
+     padding directly on the <section> tag (no .container child) are left
+     alone — zeroing them unconditionally stripped their only side margin,
+     pushing content edge-to-edge on mobile. */
+  section:has(> .container) {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  section > .container {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  /* Heading / title scaling consistency */
+  .text-large {
+    font-size: 17px !important;
+    line-height: 1.55 !important;
+  }
+  .text-body {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
+  }
+
+  /* Badges — never too big on mobile */
+  .badge {
+    font-size: 11px !important;
+    padding: 7px 14px !important;
+  }
+
+  /* Hero CTAs full width on phone */
+  .hero .btn-primary,
+  .hero .btn-secondary,
+  [class*="hero"] .btn-primary,
+  [class*="hero"] .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Tables become scrollable instead of breaking */
+  table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  /* Images never overflow their container */
+  img, video, iframe {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Long words / URLs break instead of overflowing */
+  p, h1, h2, h3, h4, span, a, li {
+    overflow-wrap: anywhere;
+    word-break: normal;
+  }
+
+  /* Code blocks scroll instead of break */
+  pre, code {
+    overflow-x: auto;
+    word-break: break-all;
+  }
+
+  /* Footer columns stack and re-align */
+  footer [style*="grid-template-columns"] {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+
+  /* Chatbot toggle — keep above safe-area on iPhone */
+  .chatbot,
+  [class*="chatbot"],
+  [data-testid*="chatbot"] {
+    bottom: max(20px, env(safe-area-inset-bottom, 0)) !important;
+  }
+
+  /* Cookie banner — make sure CTAs are tappable */
+  [class*="cookie"] button {
+    min-height: 44px !important;
+    padding: 10px 18px !important;
+  }
+}
+
+/* Very small phones (≤ 380px) */
+@media screen and (max-width: 380px) {
+  .container {
+    padding: 0 12px !important;
+  }
+  h1, .heading-1, .heading-display {
+    font-size: clamp(24px, 9vw, 36px) !important;
+  }
+  .btn-primary, .btn-secondary {
+    padding: 12px 18px !important;
+    font-size: 13px !important;
+  }
+}
+
+/* Landscape phones — reduce hero top padding */
+@media screen and (max-width: 900px) and (orientation: landscape) {
+  .hero {
+    min-height: auto !important;
+    padding-top: 76px !important;
+    padding-bottom: 32px !important;
+  }
+}
+
+
+/* ==========================================
+   ADMIN PANEL — Mobile / Tablet (<=1024px)
+   Collapsible off-canvas sidebar + top bar
+   ========================================== */
+
+/* Top bar hidden on desktop */
+.admin-topbar {
+  display: none;
+}
+
+@media screen and (max-width: 1024px) {
+  /* Top bar with hamburger */
+  .admin-topbar {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: #0d0d0d;
+    border-bottom: 1px solid #1f1f1f;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+  }
+  .admin-topbar-burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: rgba(255, 107, 0, 0.10);
+    border: 1px solid rgba(255, 107, 0, 0.30);
+    color: #FF6B00;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Sidebar becomes an off-canvas drawer */
+  .admin-sidebar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 270px !important;
+    min-height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+  }
+  .admin-sidebar.is-open {
+    transform: translateX(0);
+  }
+
+  /* Backdrop */
+  .admin-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 999;
+    -webkit-backdrop-filter: blur(2px);
+    backdrop-filter: blur(2px);
+  }
+
+  /* Tighter content padding on smaller screens */
+  main > div[style*="padding: 28px"] {
+    padding: 18px 14px 48px !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  /* Admin tables: allow horizontal scroll instead of breaking layout */
+  main table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+  }
+  /* Admin page titles smaller */
+  main h1[style*="font-size: 28px"] {
+    font-size: 22px !important;
+  }
+}
+
+/* PageIntro's h1/description are visually hidden (sr-only) now — no visible
+   banner left. This wrapper (a <div>, not <section> — see PageIntro.jsx) only
+   still exists to (a) hold that h1 for SEO and (b) when a back-link/button is
+   passed as children, clear the fixed header (64px) for it. Deliberately
+   small — not the old banner's spacing. */
+.page-intro {
+  padding: 84px 0 0;
+}
+
+/* First section under the fixed header (service pages start with the advisor
+   block). Beats the global `section { padding: ... !important }` rules. */
+section.under-header {
+  padding-top: var(--space-24) !important;
+}
+@media (min-width: 768px) {
+  section.under-header {
+    padding-top: var(--space-30) !important;
+  }
+}
+
+/* "Wo X lebt" comparison-card grids (Datenbanken, Plattformen, Formate, Kanäle,
+   Sicherheitsebenen, Einsatzbereiche, …) on every service page — 2 smaller
+   cards side by side on mobile instead of the generic single-column collapse
+   above. The attribute+class combo selector keeps the same specificity trick
+   used elsewhere in this file: it reliably beats the earlier unconditional
+   [style*="grid-template-columns"] single-column rule regardless of source
+   order, without needing to touch that shared rule for every other grid. */
+@media (max-width: 768px) {
+  [style*="grid-template-columns"].compare-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: var(--space-3) !important;
+  }
+  .compare-grid > div {
+    padding: var(--space-4) !important;
+  }
+  .compare-grid > div img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .compare-grid > div h3 {
+    font-size: 14px !important;
+  }
+  .compare-grid > div p {
+    font-size: var(--text-caption) !important;
+    line-height: 1.5 !important;
+  }
+  .compare-grid > div span {
+    font-size: 11px !important;
+  }
+}

@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /zb-panel-8x2k/
+
+Sitemap: https://www.zebick.com/sitemap.xml

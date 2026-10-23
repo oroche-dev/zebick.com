@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="de">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <meta name="description" content="Zebick entwickelt schnelle, moderne und sichere digitale Produkte – von Websites über Apps bis Cyber Security, UI/UX und KI-Automatisierung." />
+        <link rel="canonical" href="https://www.zebick.com/" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <!--
+          Loaded non-render-blocking: a plain <link rel="stylesheet"> here would
+          hold up first paint of the ENTIRE page until fonts.googleapis.com
+          responds — confirmed by a runtime audit where a slow/unreachable Google
+          Fonts request left the whole site blank for several seconds. Loading it
+          as media="print" (inapplicable to screens, so non-blocking) and
+          switching to media="all" once it's actually loaded fixes that; the
+          noscript fallback covers users without JS. font-display=swap in the
+          query string still makes text render in a fallback font immediately
+          once this CSS *does* load, rather than staying invisible.
+        -->
+        <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Space+Grotesk:wght@700;800&family=JetBrains+Mono:wght@700&family=Outfit:wght@700;800&family=Sora:wght@700;800&family=Geist+Mono:wght@600;700&display=swap" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Space+Grotesk:wght@700;800&family=JetBrains+Mono:wght@700&family=Outfit:wght@700;800&family=Sora:wght@700;800&family=Geist+Mono:wght@600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'" />
+        <noscript><link href="https://fonts.googleapis.com/css2?family=Inter:wght@600&family=Space+Grotesk:wght@700;800&family=JetBrains+Mono:wght@700&family=Outfit:wght@700;800&family=Sora:wght@700;800&family=Geist+Mono:wght@600;700&display=swap" rel="stylesheet" /></noscript>
+
+        <title>Digitalagentur für Webentwicklung, App-Entwicklung & Cyber Security | Zebick</title>
+
+        <!--
+          Static Open Graph / Twitter fallback for the homepage. Social-media
+          link-preview bots (Facebook, Twitter/X, LinkedIn, WhatsApp, ...)
+          generally do NOT execute JavaScript, so they never see the
+          per-page tags src/components/common/Seo.jsx injects at runtime —
+          they only ever see this static HTML. Deep links (e.g. a shared
+          service-page URL) will therefore show this homepage preview
+          instead of a page-specific one; fixing that fully needs
+          server-side rendering or per-route prerendering, which is a
+          bigger architectural change than a targeted optimization pass.
+        -->
+        <meta property="og:title" content="Zebick – Digitalagentur für Webentwicklung, App-Entwicklung & Cyber Security" />
+        <meta property="og:description" content="Zebick entwickelt schnelle, moderne und sichere digitale Produkte – von Websites über Apps bis Cyber Security, UI/UX und KI-Automatisierung." />
+        <meta property="og:image" content="https://www.zebick.com/og-image.png" />
+        <meta property="og:url" content="https://www.zebick.com/" />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Zebick" />
+        <meta property="og:locale" content="de_DE" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Zebick – Digitalagentur für Webentwicklung, App-Entwicklung & Cyber Security" />
+        <meta name="twitter:description" content="Zebick entwickelt schnelle, moderne und sichere digitale Produkte – von Websites über Apps bis Cyber Security, UI/UX und KI-Automatisierung." />
+        <meta name="twitter:image" content="https://www.zebick.com/og-image.png" />
+
+        <!--
+          Google Analytics wird jetzt über src/components/GoogleAnalytics.jsx geladen
+          (consent-gated, siehe REACT_APP_GA_ID in .env) statt hier statisch im HTML.
+        -->
+    </head>
+    <body>
+        <noscript>You need to enable JavaScript to run this app.</noscript>
+        <div id="root"></div>
+    </body>
+</html>

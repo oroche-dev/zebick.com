@@ -1,0 +1,53 @@
+# Self-hosting starting point for a single VPS/Docker host.
+#
+# Usage:
+#   1. cp backend/.env.example backend/.env and fill in real production
+#      values (SMTP, CORS_ORIGINS=https://zebick.com,https://www.zebick.com,
+#      JWT_SECRET + ADMIN_PASSWORD_HASH via `python -m scripts.gen_secrets`, …)
+#   2. Set REACT_APP_BACKEND_URL below to wherever the backend will actually
+#      be reachable from a visitor's browser (e.g. https://api.zebick.com) —
+#      CRA bakes this in at build time, so it can't be changed at runtime.
+#   3. docker compose up -d --build
+#
+# This does NOT set up TLS/a reverse proxy for the public domain — put this
+# behind your own nginx/Caddy/Traefik (or a platform's load balancer) for
+# HTTPS termination in production.
+
+services:
+  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    volumes:
+      - mongo_data:/data/db
+    ports:
+      - "27017:27017"
+
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    depends_on:
+      - mongo
+    env_file:
+      - ./backend/.env
+    environment:
+      MONGO_URL: mongodb://mongo:27017
+    volumes:
+      - ./backend/uploads:/app/uploads
+      - ./backend/backups:/app/backups
+    ports:
+      - "8001:8001"
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        REACT_APP_BACKEND_URL: ${REACT_APP_BACKEND_URL:-https://api.zebick.com}
+        REACT_APP_GA_ID: ${REACT_APP_GA_ID:-}
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "3001:80"
+
+volumes:
+  mongo_data:

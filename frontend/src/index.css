@@ -1,0 +1,1540 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Backgrounds - Dark Theme Foundation with Variations */
+  --bg-primary: #000000;
+  --bg-secondary: #080808;
+  --bg-tertiary: #0d0d0d;
+  --bg-dark-charcoal: #121212;
+  --bg-graphite: #161616;
+  --bg-deep-black: #030303;
+  --bg-card: rgba(255, 255, 255, 0.02);
+  --bg-overlay: rgba(255, 255, 255, 0.03);
+  
+  /* Orange Section Backgrounds */
+  --bg-orange-subtle: rgba(255, 107, 0, 0.03);
+  --bg-orange-light: rgba(255, 107, 0, 0.06);
+  --bg-orange-glow: rgba(255, 107, 0, 0.08);
+  
+  /* Orange Accent Colors */
+  --accent-primary: #FF6B00;
+  --accent-light: #FF8A33;
+  --accent-dark: #CC5500;
+  --accent-glow: rgba(255, 107, 0, 0.5);
+  --accent-subtle: rgba(255, 107, 0, 0.08);
+  --accent-border: rgba(255, 107, 0, 0.25);
+  
+  /* Text */
+  --text-primary: #FFFFFF;
+  --text-secondary: rgba(255, 255, 255, 0.8);
+  --text-muted: rgba(255, 255, 255, 0.45);
+  --text-dim: rgba(255, 255, 255, 0.25);
+  
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-medium: rgba(255, 255, 255, 0.12);
+  --border-accent: rgba(255, 107, 0, 0.35);
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.02);
+  --glass-bg-hover: rgba(255, 255, 255, 0.04);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: 24px;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  
+  /* Shadows & Glow */
+  --shadow-glow: 0 0 60px rgba(255, 107, 0, 0.2);
+  --shadow-glow-lg: 0 0 100px rgba(255, 107, 0, 0.3);
+  --shadow-glow-sm: 0 0 30px rgba(255, 107, 0, 0.15);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --shadow-card-hover: 0 16px 48px rgba(0, 0, 0, 0.6);
+
+  /* ============================================================
+     SPACING SCALE — 4px base unit. Use these for margin, padding,
+     and gap everywhere instead of ad-hoc pixel values, so spacing
+     stays consistent across pages/components.
+     ============================================================ */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-30: 120px;
+
+  /* Layout */
+  --container-max: 1400px;
+  --content-max: 720px; /* comfortable reading width for body text */
+
+  /* ============================================================
+     TYPOGRAPHY SYSTEM
+     ============================================================ */
+  --font-sans: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Font sizes — fluid (clamp) so they scale smoothly between mobile
+     and desktop instead of jumping at breakpoints. Min/max chosen from
+     the sizes already in use across the site. */
+  --text-xs: clamp(11px, 0.6vw + 9.5px, 12px);
+  --text-sm: clamp(12.5px, 0.6vw + 11px, 14px);
+  --text-base: clamp(14.5px, 0.5vw + 13.3px, 16px);
+  --text-lg: clamp(16px, 0.6vw + 14.5px, 18px);
+  --text-xl: clamp(18px, 0.7vw + 16px, 20px);
+
+  /* Component-specific sizes */
+  --text-button: 15px;
+  --text-nav: 14px;
+  --text-label: 13px; /* badges, tags, small caps labels */
+  --text-caption: 12px;
+
+  --text-h6: clamp(16px, 0.8vw + 14.5px, 18px);
+  --text-h5: clamp(18px, 1vw + 16px, 20px);
+  --text-h4: clamp(20px, 1.3vw + 17px, 24px);
+  --text-h3: clamp(22px, 3vw, 32px);
+  --text-h2: clamp(28px, 4vw, 44px);
+  --text-h1: clamp(36px, 5vw, 60px);
+  --text-display: clamp(48px, 8vw, 84px);
+
+  /* Font weights */
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+
+  /* Line heights */
+  --leading-tight: 1.08;
+  --leading-snug: 1.25;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  /* Letter spacing */
+  --tracking-tight: -0.03em;
+  --tracking-snug: -0.02em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.08em;
+  --tracking-wider: 0.12em;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  line-height: var(--leading-normal);
+  -webkit-tap-highlight-color: transparent;
+  text-rendering: optimizeLegibility;
+}
+
+/* Base heading hierarchy — applies to any plain <h1>-<h6> that doesn't
+   already carry a .heading-* class or its own inline font-size (an inline
+   style always wins over this, so existing hand-tuned headings are
+   unaffected). Keeps the site's type scale consistent by default instead
+   of only wherever a utility class was explicitly added. */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-sans);
+  font-weight: var(--font-bold);
+  letter-spacing: var(--tracking-snug);
+  margin: 0;
+}
+h1 { font-size: var(--text-h1); line-height: var(--leading-tight); letter-spacing: var(--tracking-tight); }
+h2 { font-size: var(--text-h2); line-height: var(--leading-snug); letter-spacing: var(--tracking-snug); }
+h3 { font-size: var(--text-h3); line-height: var(--leading-snug); letter-spacing: var(--tracking-snug); }
+h4 { font-size: var(--text-h4); line-height: var(--leading-snug); font-weight: var(--font-semibold); }
+h5 { font-size: var(--text-h5); line-height: var(--leading-snug); font-weight: var(--font-semibold); }
+h6 { font-size: var(--text-h6); line-height: var(--leading-snug); font-weight: var(--font-semibold); letter-spacing: var(--tracking-normal); }
+
+p {
+  line-height: var(--leading-relaxed);
+}
+
+/* Prevent horizontal overflow site-wide on mobile */
+html, body, #root, .App {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Heading wraps cleanly on small screens */
+@media screen and (max-width: 640px) {
+  h1, h2, h3 {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }
+  /* Prevent iOS Safari zooming inputs (font-size >= 16px) */
+  input[type="text"], input[type="email"], input[type="tel"],
+  input[type="number"], input[type="password"], input[type="search"],
+  textarea, select {
+    font-size: 16px !important;
+  }
+}
+
+code, .mono {
+  font-family: var(--font-mono);
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--accent-primary);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-light);
+}
+
+/* Selection */
+::selection {
+  background: var(--accent-primary);
+  color: var(--bg-primary);
+}
+
+/* Glass Card - Enhanced */
+.glass-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card:hover {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  border-color: var(--border-accent);
+  box-shadow: var(--shadow-glow-sm);
+  transform: translateY(-4px);
+}
+
+.glass-card-static {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+}
+
+/* Glow Card */
+.glow-card {
+  background: linear-gradient(135deg, rgba(255, 107, 0, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--border-accent);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-glow-sm);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glow-card:hover {
+  box-shadow: var(--shadow-glow);
+  border-color: var(--accent-primary);
+  transform: translateY(-6px);
+}
+
+/* Buttons - Rounded */
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-dark) 100%);
+  color: var(--bg-primary);
+  border: none;
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-button);
+  font-weight: var(--font-semibold);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 4px 20px rgba(255, 107, 0, 0.3);
+}
+
+.btn-primary:hover {
+  background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent-primary) 100%);
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-glow);
+}
+
+.btn-primary:active {
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-primary);
+  border: 1px solid var(--border-medium);
+  padding: var(--space-4) var(--space-8);
+  font-size: var(--text-button);
+  font-weight: var(--font-medium);
+  font-family: var(--font-sans);
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(10px);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--text-primary);
+  transform: translateY(-2px);
+}
+
+/* Arrow-fill hover effect — a circle grows from the trailing-icon spot and
+   sweeps a contrasting fill + text color across the button. Shared by
+   .btn-primary/.btn-secondary (zero markup changes) and .btn-fill (opt-in
+   class for one-off custom-styled buttons, e.g. the header CTA). */
+.btn-fill {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary, .btn-secondary, .btn-fill {
+  isolation: isolate;
+}
+.btn-primary::before, .btn-secondary::before, .btn-fill::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  clip-path: circle(0% at calc(100% - 24px) 50%);
+  transition: clip-path 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+.btn-primary:hover::before, .btn-secondary:hover::before, .btn-fill:hover::before {
+  clip-path: circle(150% at calc(100% - 24px) 50%);
+}
+.btn-primary, .btn-secondary, .btn-fill {
+  /* color kept in lockstep with the circle's clip-path (same duration/easing,
+     no delay) so the text never reverts to its low-contrast default color
+     while the white fill is still visible, in either direction */
+  transition: color 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86), background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+.btn-primary > svg, .btn-secondary > svg, .btn-fill > svg {
+  transition: transform 0.45s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+.btn-primary:hover > svg, .btn-secondary:hover > svg, .btn-fill:hover > svg {
+  transform: translateX(4px);
+}
+
+.btn-primary::before { background: var(--text-primary); }
+.btn-primary:hover { color: var(--accent-primary); }
+
+.btn-secondary::before { background: var(--text-primary); }
+.btn-secondary:hover { color: var(--accent-primary); }
+
+.btn-fill::before { background: var(--btn-fill-color, var(--text-primary)); }
+.btn-fill:hover { color: var(--btn-fill-text, var(--accent-primary)); }
+
+/* default (non-hover) text color for .btn-fill buttons whose base color
+   can't be set inline — an inline color would always beat the :hover rule above */
+.btn-fill-dark { color: #000; }
+
+/* CookieBanner.css defines its own `.cookie-btn.primary { color: #000 }`
+   class (not inline) at equal specificity to `.btn-fill:hover` — this
+   wins regardless of stylesheet load order */
+.cookie-btn.primary.btn-fill:hover { color: var(--accent-primary); }
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-primary::before, .btn-secondary::before, .btn-fill::before,
+  .btn-primary > svg, .btn-secondary > svg, .btn-fill > svg {
+    transition: none;
+  }
+}
+
+/* Typography — utility classes for when the element itself can't be a
+   plain h1-h6 (e.g. a styled <span> or <div> standing in as a heading). */
+.heading-display {
+  font-size: var(--text-display);
+  font-weight: var(--font-bold);
+  line-height: 1.02;
+  letter-spacing: -0.04em;
+}
+
+.heading-1 {
+  font-size: var(--text-h1);
+  font-weight: var(--font-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+}
+
+.heading-2 {
+  font-size: var(--text-h2);
+  font-weight: var(--font-semibold);
+  line-height: 1.15;
+  letter-spacing: var(--tracking-snug);
+}
+
+.heading-3 {
+  font-size: var(--text-h3);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-snug);
+  letter-spacing: -0.01em;
+}
+
+.heading-4 {
+  font-size: var(--text-h4);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-snug);
+}
+
+.heading-5 {
+  font-size: var(--text-h5);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-snug);
+}
+
+.heading-6 {
+  font-size: var(--text-h6);
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-normal);
+}
+
+.text-large {
+  font-size: var(--text-xl);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+}
+
+.text-body {
+  font-size: var(--text-base);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+}
+
+.text-small {
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+}
+
+.text-xs {
+  font-size: var(--text-xs);
+  line-height: var(--leading-normal);
+  color: var(--text-muted);
+}
+
+/* Accent Text */
+.text-accent {
+  color: var(--accent-primary);
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-light) 50%, #FFB366 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 var(--space-12);
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    padding: 0 var(--space-20);
+  }
+}
+
+/* Section — the breakpoint-specific padding overrides live in
+   responsive.css (loaded after this file, so they take precedence); this
+   base rule is the desktop-equivalent fallback and keeps one source for
+   the "large section gap" value. */
+.section {
+  padding: var(--space-30) 0;
+  position: relative;
+}
+
+/* Grid Background Pattern with Glow */
+.grid-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 50% 42%, rgba(255, 107, 0, 0.06) 0%, transparent 55%),
+    linear-gradient(rgba(255, 107, 0, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 107, 0, 0.045) 1px, transparent 1px);
+  background-size: 100% 100%, 80px 80px, 80px 80px;
+  pointer-events: none;
+}
+
+/* Top ambient glow that fills the strip between the fixed header and the hero.
+   Defined in CSS (not inline) so the global "dim glow outside .hero" rule does not target it. */
+.hero-top-glow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 560px;
+  background: radial-gradient(72% 92% at 50% 0%, rgba(255, 122, 26, 0.30) 0%, rgba(255, 107, 0, 0.12) 38%, rgba(9, 7, 5, 1) 78%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Sonner toast container must be fixed, not in flow.
+   In this build it rendered as a static block (240px), pushing the whole page
+   down and creating an empty gap between the header and the hero. */
+section[aria-live][aria-label*="Notifications"] {
+  position: fixed !important;
+  bottom: 0 !important;
+  right: 0 !important;
+  height: auto !important;
+  pointer-events: none;
+  z-index: 999999;
+}
+
+/* Orange Ambient Glow */
+.ambient-glow {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(255, 107, 0, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.ambient-glow-top-right {
+  top: -200px;
+  right: -200px;
+}
+
+.ambient-glow-bottom-left {
+  bottom: -200px;
+  left: -200px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 107, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 107, 0, 0.5);
+  }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.6; }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.animate-slideInLeft {
+  animation: slideInLeft 0.8s ease forwards;
+}
+
+.animate-slideInRight {
+  animation: slideInRight 0.8s ease forwards;
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* Delay classes */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* Text Animations */
+@keyframes textReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes textSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes textGlow {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(255, 107, 0, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 40px rgba(255, 107, 0, 0.6), 0 0 60px rgba(255, 107, 0, 0.4);
+  }
+}
+
+@keyframes letterSpacing {
+  0% {
+    letter-spacing: -0.5em;
+    opacity: 0;
+  }
+  40% {
+    opacity: 0.6;
+  }
+  100% {
+    letter-spacing: normal;
+    opacity: 1;
+  }
+}
+
+@keyframes typewriter {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
+@keyframes blinkCursor {
+  0%, 100% { border-color: var(--accent-primary); }
+  50% { border-color: transparent; }
+}
+
+@keyframes wordFade {
+  0% {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes charReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(50px) rotateX(-90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes scaleIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounceIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-text-reveal {
+  animation: textReveal 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.animate-text-slide {
+  animation: textSlideIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.animate-text-glow {
+  animation: textGlow 3s ease-in-out infinite;
+}
+
+.animate-letter-spacing {
+  animation: letterSpacing 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.animate-word-fade {
+  animation: wordFade 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.animate-bounce-in {
+  animation: bounceIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  opacity: 0;
+}
+
+.animate-gradient-text {
+  background: linear-gradient(90deg, #FF6B00, #FF8A33, #FFB366, #FF8A33, #FF6B00);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradientShift 4s ease infinite;
+}
+
+/* Staggered children animation */
+.stagger-children > * {
+  opacity: 0;
+  animation: wordFade 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+.stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+.stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+.stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+.stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+.stagger-children > *:nth-child(7) { animation-delay: 0.7s; }
+.stagger-children > *:nth-child(8) { animation-delay: 0.8s; }
+.stagger-children > *:nth-child(9) { animation-delay: 0.9s; }
+.stagger-children > *:nth-child(10) { animation-delay: 1.0s; }
+
+/* Link styles */
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--accent-primary);
+}
+
+/* Form Elements - Rounded */
+input, textarea, select {
+  font-family: var(--font-sans);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  padding: var(--space-4) var(--space-5);
+  font-size: var(--text-button);
+  width: 100%;
+  transition: all 0.3s ease;
+  border-radius: var(--radius-md);
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 4px var(--accent-subtle), var(--shadow-glow-sm);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+input::placeholder, textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Badge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: rgba(255, 107, 0, 0.1);
+  border: 1px solid var(--border-accent);
+  padding: 10px var(--space-5);
+  font-size: var(--text-label);
+  font-weight: var(--font-semibold);
+  color: var(--accent-primary);
+  border-radius: var(--radius-2xl);
+  backdrop-filter: blur(10px);
+}
+
+/* Tag */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255, 107, 0, 0.08);
+  border: 1px solid rgba(255, 107, 0, 0.2);
+  padding: 6px 14px;
+  font-size: var(--text-caption);
+  font-weight: var(--font-medium);
+  color: var(--accent-primary);
+  border-radius: var(--radius-md);
+}
+
+/* Feature list item */
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+  background: rgba(255, 107, 0, 0.05);
+  border-color: var(--border-accent);
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+
+    --card: 0 0% 3%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 3%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 24 100% 50%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 6%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 45%;
+    --accent: 24 100% 50%;
+    --accent-foreground: 0 0% 0%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 24 100% 50%;
+    --radius: 12px;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+
+/* ==========================================
+   RESPONSIVE STYLES WITH VH UNITS
+   ========================================== */
+
+/* ==========================================
+   MOBILE FIRST - Base styles (320px+)
+   ========================================== */
+@media screen and (max-width: 480px) {
+  html {
+    font-size: 14px;
+  }
+  
+  .container {
+    padding: 0 16px;
+  }
+  
+  /* Hero Section Mobile */
+  .hero {
+    min-height: 100vh;
+    padding-top: 80px !important;
+    padding-bottom: 40px !important;
+  }
+  
+  .hero h1, .heading-1 {
+    font-size: clamp(32px, 10vw, 48px) !important;
+    line-height: 1.15 !important;
+  }
+  
+  .hero p {
+    font-size: 16px !important;
+  }
+  
+  /* Section Mobile */
+  .section {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+  
+  /* Hide decorative elements on mobile */
+  .hero-bg,
+  .grid-pattern,
+  [class*="floating"],
+  [class*="decorative"] {
+    display: none !important;
+  }
+  
+  /* Buttons Mobile */
+  .btn-primary, .btn-secondary {
+    padding: 14px 24px !important;
+    font-size: 14px !important;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  /* Cards Mobile */
+  .card, [class*="card"] {
+    padding: 20px !important;
+    border-radius: 16px !important;
+  }
+  
+  /* Grid to Single Column — catch ALL inline grids (incl. fr-ratios like 1.2fr 0.8fr).
+     minmax(0,1fr) prevents grid blowout (track expanding to min-content width). */
+  [style*="grid-template-columns"]:not(.keep-grid):not([data-keep-grid]) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  /* Allow grid/flex children to shrink below their content size (no overflow) */
+  [style*="grid-template-columns"]:not(.keep-grid):not([data-keep-grid]) > * {
+    min-width: 0 !important;
+  }
+
+  /* Reduce oversized inline paddings on mobile so content fits */
+  [style*="padding: 80px"],
+  [style*="padding: 72px"],
+  [style*="padding: 64px"],
+  [style*="padding: 56px"],
+  [style*="padding: 48px"],
+  [style*="padding: 40px"] {
+    padding: 24px !important;
+  }
+  [style*="padding: 36px"],
+  [style*="padding: 32px"],
+  [style*="padding: 28px"] {
+    padding: 20px !important;
+  }
+
+  /* Scale down very large inline font-sizes that don't use heading classes */
+  [style*="font-size: 96px"],
+  [style*="font-size: 80px"],
+  [style*="font-size: 72px"],
+  [style*="font-size: 64px"] {
+    font-size: 36px !important;
+    line-height: 1.15 !important;
+  }
+  [style*="font-size: 56px"],
+  [style*="font-size: 48px"] {
+    font-size: 30px !important;
+    line-height: 1.2 !important;
+  }
+  [style*="font-size: 44px"],
+  [style*="font-size: 42px"],
+  [style*="font-size: 40px"],
+  [style*="font-size: 38px"] {
+    font-size: 27px !important;
+    line-height: 1.25 !important;
+  }
+  [style*="font-size: 36px"],
+  [style*="font-size: 34px"],
+  [style*="font-size: 32px"] {
+    font-size: 24px !important;
+    line-height: 1.3 !important;
+  }
+
+  /* Flex wrap (only for row-flex, not column) */
+  [style*="display: flex"][style*="gap"]:not([style*="flex-direction: column"]) {
+    flex-wrap: wrap;
+  }
+
+  /* Tech-stack pill rows: let the row wrap, keep each pill intact (no vertical text) */
+  [data-testid="tech-stack-section"] .tech-grid,
+  [data-testid="tech-stack-section"] .tech-grid > * {
+    min-width: 0 !important;
+  }
+  [data-testid^="tech-group-"] > div:last-child {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    min-width: 0 !important;
+  }
+  [data-testid^="tech-group-"] > div:last-child > div {
+    flex: 0 0 auto !important;
+    flex-wrap: nowrap !important;
+  }
+  [data-testid^="tech-group-"] > div:last-child > div span {
+    white-space: nowrap !important;
+  }
+  
+  /* Section Labels */
+  .section-label {
+    font-size: 10px !important;
+    padding: 6px 12px !important;
+  }
+  
+  /* Footer Mobile */
+  footer {
+    padding: 40px 16px !important;
+  }
+  
+  footer [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 32px !important;
+  }
+  
+  /* Navigation Mobile (only affect header desktop nav, not mobile menu panel) */
+  header nav {
+    padding: 12px 16px !important;
+  }
+  
+  /* Hide desktop nav items on mobile */
+  .desktop-nav {
+    display: none !important;
+  }
+  
+  /* Stats Mobile */
+  [style*="display: flex"][style*="gap: 48px"],
+  [style*="display: flex"][style*="gap: 32px"] {
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+}
+
+/* ==========================================
+   TABLET STYLES (481px - 768px)
+   ========================================== */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  html {
+    font-size: 15px;
+  }
+  
+  .container {
+    padding: 0 24px;
+  }
+  
+  /* Hero Tablet */
+  .hero {
+    min-height: 100vh;
+    padding-top: 100px !important;
+    padding-bottom: 60px !important;
+  }
+  
+  .hero h1, .heading-1 {
+    font-size: clamp(40px, 8vw, 56px) !important;
+  }
+  
+  /* Section Tablet */
+  .section {
+    padding-top: 80px !important;
+    padding-bottom: 80px !important;
+  }
+  
+  /* 2 Column Grid on Tablet */
+  [style*="grid-template-columns: repeat(3"],
+  [style*="grid-template-columns: repeat(4"],
+  [style*="grid-template-columns: repeat(6"] {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+  
+  /* Buttons Tablet */
+  .btn-primary, .btn-secondary {
+    padding: 16px 28px !important;
+    font-size: 15px !important;
+  }
+  
+  /* Cards Tablet */
+  .card, [class*="card"] {
+    padding: 24px !important;
+  }
+}
+
+/* ==========================================
+   SMALL LAPTOP (769px - 1024px)
+   ========================================== */
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    padding: 0 32px;
+    max-width: 960px;
+  }
+  
+  /* Hero Small Laptop */
+  .hero {
+    min-height: 100vh;
+    padding-top: 100px !important;
+  }
+  
+  .hero h1, .heading-1 {
+    font-size: clamp(48px, 6vw, 64px) !important;
+  }
+  
+  /* Section */
+  .section {
+    padding-top: 100px !important;
+    padding-bottom: 100px !important;
+  }
+  
+  /* 3 Column on Small Laptop */
+  [style*="grid-template-columns: repeat(4"],
+  [style*="grid-template-columns: repeat(6"] {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+  /* Two Column Layouts */
+  [style*="grid-template-columns: 1fr 1fr"] {
+    gap: 40px !important;
+  }
+}
+
+/* ==========================================
+   LAPTOP (1025px - 1280px)
+   ========================================== */
+@media screen and (min-width: 1025px) and (max-width: 1280px) {
+  .container {
+    padding: 0 48px;
+    max-width: 1200px;
+  }
+  
+  /* Hero Laptop */
+  .hero {
+    min-height: 100vh;
+  }
+  
+  .hero h1, .heading-1 {
+    font-size: clamp(56px, 5vw, 72px) !important;
+  }
+  
+  /* Section */
+  .section {
+    padding-top: 120px !important;
+    padding-bottom: 120px !important;
+  }
+}
+
+/* ==========================================
+   DESKTOP (1281px - 1536px)
+   ========================================== */
+@media screen and (min-width: 1281px) and (max-width: 1536px) {
+  .container {
+    padding: 0 64px;
+    max-width: 1400px;
+  }
+  
+  /* Hero Desktop */
+  .hero {
+    min-height: 100vh;
+  }
+  
+  .hero h1 {
+    font-size: 72px !important;
+  }
+  
+  .heading-1 {
+    font-size: 52px !important;
+  }
+  
+  /* Section */
+  .section {
+    padding-top: 140px !important;
+    padding-bottom: 140px !important;
+  }
+}
+
+/* ==========================================
+   LARGE DESKTOP (1537px+)
+   ========================================== */
+@media screen and (min-width: 1537px) {
+  .container {
+    padding: 0 80px;
+    max-width: 1600px;
+  }
+  
+  /* Hero Large */
+  .hero {
+    min-height: 100vh;
+  }
+  
+  .hero h1 {
+    font-size: 80px !important;
+  }
+  
+  .heading-1 {
+    font-size: 56px !important;
+  }
+}
+
+/* ==========================================
+   HEIGHT-BASED RESPONSIVE (VH)
+   ========================================== */
+
+/* Short Screens (under 700px height) */
+@media screen and (max-height: 700px) {
+  .hero {
+    min-height: auto;
+    padding-top: 80px !important;
+    padding-bottom: 40px !important;
+  }
+  
+  .section {
+    padding-top: 60px !important;
+    padding-bottom: 60px !important;
+  }
+}
+
+/* Medium Height Screens */
+@media screen and (min-height: 701px) and (max-height: 900px) {
+  .hero {
+    min-height: 100vh;
+    padding-top: 100px !important;
+    padding-bottom: 60px !important;
+  }
+}
+
+/* Tall Screens */
+@media screen and (min-height: 901px) {
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* ==========================================
+   TOUCH DEVICE SPECIFIC
+   ========================================== */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .card:hover,
+  [class*="card"]:hover {
+    transform: none !important;
+    box-shadow: inherit !important;
+  }
+  
+  /* Larger touch targets */
+  .btn-primary, .btn-secondary {
+    min-height: 48px;
+  }
+  
+  input, textarea, select {
+    min-height: 48px;
+    font-size: 16px !important; /* Prevents zoom on iOS */
+  }
+}
+
+/* ==========================================
+   LANDSCAPE MOBILE
+   ========================================== */
+@media screen and (max-width: 896px) and (orientation: landscape) {
+  .hero {
+    min-height: auto;
+    padding-top: 60px !important;
+    padding-bottom: 40px !important;
+  }
+  
+  .hero h1 {
+    font-size: 36px !important;
+  }
+  
+  .section {
+    padding-top: 40px !important;
+    padding-bottom: 40px !important;
+  }
+}
+
+/* ==========================================
+   PRINT STYLES
+   ========================================== */
+@media print {
+  .hero {
+    min-height: auto;
+    page-break-after: always;
+  }
+  
+  .section {
+    page-break-inside: avoid;
+  }
+  
+  nav, footer, .chatbot {
+    display: none !important;
+  }
+}
+
+/* ==========================================
+   UTILITY CLASSES FOR RESPONSIVE
+   ========================================== */
+
+/* Hide on Mobile */
+.hide-mobile {
+  display: block;
+}
+
+@media screen and (max-width: 768px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+/* Hide on Desktop */
+.hide-desktop {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .hide-desktop {
+    display: block !important;
+  }
+}
+
+/* ==============================================================
+   DEZENT MODE — global tone-down (Jan 2026)
+   Removes glow/blur/heavy radial gradients on cards, CTAs and
+   accent boxes site-wide EXCEPT inside hero sections.
+   Keeps brand orange but at lower intensity.
+   ============================================================== */
+
+/* 1. Disable big orange box-shadows (glow) on any element
+      that ISN'T inside a .hero or [data-testid*="hero"] block. */
+:not(.hero):not([data-testid*="hero"]):not([data-testid*="hero"] *) > * {
+  /* placeholder — actual rules below use targeted selectors */
+}
+
+/* Buttons & links with orange shadow → reduce intensity */
+body :not(.hero) a[style*="rgba(255, 107, 0"],
+body :not(.hero) button[style*="rgba(255, 107, 0"],
+body :not(.hero) div[style*="boxShadow"][style*="rgba(255, 107, 0"] {
+  box-shadow: none !important;
+}
+
+/* Filter blur (radial glow effect divs) → soften strongly outside hero
+   NOTE: excludes elements with backdrop-filter (UI bars/headers) which only use blur for glass effect */
+body :not(.hero) :not(.hero *) > div[style*="filter: blur"][style*="rgba(255, 107, 0"]:not([style*="backdrop-filter"]):not(.tools-fixed-filter):not(.no-glow-dim),
+body :not(.hero) :not(.hero *) > div[style*="filter:blur"][style*="rgba(255, 107, 0"]:not([style*="backdrop-filter"]):not(.tools-fixed-filter):not(.no-glow-dim) {
+  opacity: 0.18 !important;
+  filter: blur(50px) !important;
+}
+
+/* Radial-gradient orange background divs (decorative glow) → fade out outside hero */
+body :not(.hero) :not(.hero *) > div[style*="radial-gradient"][style*="rgba(255, 107, 0"] {
+  opacity: 0.25 !important;
+}
+
+/* Large gradient cards (linear-gradient orange) → subtle solid tint */
+body :not(.hero) div[style*="linear-gradient"][style*="rgba(255, 107, 0, 0.15)"],
+body :not(.hero) div[style*="linear-gradient"][style*="rgba(255, 107, 0, 0.2)"],
+body :not(.hero) div[style*="linear-gradient"][style*="rgba(255, 107, 0, 0.12)"] {
+  background: rgba(255, 107, 0, 0.04) !important;
+  border-color: rgba(255, 107, 0, 0.14) !important;
+}
+
+/* Reduce big border radius cards to feel more modern/restrained outside hero */
+body :not(.hero) div[style*="borderRadius: '32px'"],
+body :not(.hero) div[style*="borderRadius: 32px"] {
+  border-radius: 16px !important;
+}
+body :not(.hero) div[style*="borderRadius: '24px'"],
+body :not(.hero) div[style*="borderRadius: 24px"] {
+  border-radius: 14px !important;
+}
+
+/* Big circular icon-badges (gradient orange circles) → flatten to small soft tile */
+body :not(.hero) div[style*="linear-gradient(135deg, var(--accent-primary)"][style*="borderRadius: '50%'"],
+body :not(.hero) div[style*="linear-gradient(135deg, var(--accent-primary)"][style*="borderRadius: '20px'"][style*="100px"] {
+  background: rgba(255, 107, 0, 0.12) !important;
+  box-shadow: none !important;
+}
+
+/* Reduce hero overlays only slightly (keep them but softer) — comment out if you want hero untouched */
+/* .hero [style*="filter: blur"] { opacity: 0.85; } */
+
+/* Specifically tame any inline 0 N Npx rgba(255,107,0, 0.3+) shadows everywhere except hero */
+body :not(.hero) [style*="boxShadow: '0 20px"],
+body :not(.hero) [style*="boxShadow: '0 15px"],
+body :not(.hero) [style*="boxShadow: '0 10px 40px"] {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* Pill-shaped pulsing "Kostenlose Beratung / Sparkles" badges → flat dezent */
+body :not(.hero) div[style*="rgba(255, 107, 0, 0.2)"][style*="borderRadius: '50px'"],
+body :not(.hero) div[style*="rgba(255, 107, 0, 0.15)"][style*="borderRadius: '50px'"] {
+  background: rgba(255, 107, 0, 0.08) !important;
+  border-color: rgba(255, 107, 0, 0.18) !important;
+}
+
+/* ==============================================================
+   IMAGES: B&W by default, color on hover (Jan 2026)
+   Applies to all <img> tags from images.unsplash.com EXCEPT inside
+   hero sections, logos, brand and explicit .img-color elements.
+   ============================================================== */
+
+img[src*="images.unsplash.com"] {
+  filter: grayscale(100%) contrast(1.05);
+  transition: filter 350ms ease;
+}
+
+img[src*="images.unsplash.com"]:hover,
+*:hover > img[src*="images.unsplash.com"],
+*:hover img[src*="images.unsplash.com"] {
+  filter: grayscale(0%) contrast(1);
+}
+
+/* Keep hero images and explicit overrides in color */
+.hero img[src*="images.unsplash.com"],
+[data-testid*="hero"] img[src*="images.unsplash.com"],
+.img-color,
+img.img-color {
+  filter: none !important;
+}
+
+
+/* Soften card hover transforms — keep but reduce */
+body :not(.hero) [style*="transform: translateY(-8px)"] { transform: translateY(-3px) !important; }
+body :not(.hero) [style*="transform: translateY(-10px)"] { transform: translateY(-3px) !important; }
+
+/* Headings inside dezent cards: reduce extreme sizes 52px / 42px sometimes used in CTAs */
+body :not(.hero) [data-testid$="-cta"] h2,
+body :not(.hero) [data-testid$="-cta"] h3 {
+  font-size: clamp(22px, 3vw, 30px) !important;
+  font-weight: 700 !important;
+}
+
+/* Respect the user's OS-level reduced-motion preference. Most animations in
+   this codebase are inline React styles (higher specificity than a normal
+   stylesheet rule), so this needs !important to actually override them —
+   scroll-triggered reveals, hover transforms, the timeline path animation,
+   etc. all get short-circuited to an instant, motion-free state. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

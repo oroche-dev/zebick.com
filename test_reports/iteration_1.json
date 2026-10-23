@@ -1,0 +1,20 @@
+{
+  "summary": "Verified fix for the ToolsPage 'tools appear then disappear / stuck on Lade Tools' bug caused by React.StrictMode double-mount aborting the first XHR. Ran a comprehensive Playwright suite against the public preview URL: initial /tools load, 3 consecutive reloads, alias routes /kostenlose-analyse and /analyse, service filter (cyber-security) and filter-all restore, and clicking tool-card-kostenrechner. In every scenario the tools-grid rendered exactly 16 cards, remained stable for +3s after initial render, no tools-load-error banner appeared, and no console/page errors were observed. 'Alle Tools' pill correctly shows count 16. Cyber-security filter reduces to 1 card and filter-all restores 16. Clicking the kostenrechner card renders the Website-Kostenrechner widget below while the 16-card grid stays visible.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": []
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "n/a", "frontend": "100%"},
+  "test_credentials": "none required (public page)",
+  "seed_data_creation": "none",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "ToolsPage StrictMode double-mount fix confirmed working. Backend GET /api/tools returns 16 enabled tools. All data-testid selectors used in review request are present: tools-grid, tool-card-<slug>, tools-load-error (not shown), filter-all, filter-cyber-security. If retesting, use networkidle wait plus a +2-3s stability check to catch any regression where StrictMode remount blanks the grid.",
+  "rca of the issue": "Prior bug: React 18 StrictMode mounts effects twice in dev; original fetchTools used a single-fire AbortController whose first mount abort caused net::ERR_ABORTED and left state in loading/empty. Fix (already in place per files_of_reference) uses AbortController with retry, so the second mount successfully populates state. Testing confirms grid populates and remains stable across reloads and alias routes."
+}
