@@ -14,7 +14,7 @@ def _header_html(title, emoji=""):
     return f"""<tr><td style="padding:0">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0a;padding:0;text-align:center">
 <tr><td style="padding:52px 30px 40px;text-align:center;background:#0a0a0a">
-<img src="{LOGO_URL}" alt="Zebick" width="177" height="52" class="zb-logo" style="display:inline-block;height:52px;width:177px;filter:brightness(0) invert(1);margin-bottom:26px" />
+<img src="{LOGO_URL}" alt="Zebick" width="177" height="52" class="zb-logo" style="display:inline-block;height:52px;width:177px;margin-bottom:26px" />
 <div style="width:56px;height:3px;background:#FF6B00;margin:0 auto 24px;border-radius:2px;box-shadow:0 0 12px rgba(255,107,0,0.4)"></div>
 <h1 style="color:#fff;font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:600;margin:0 0 12px;line-height:1.3;letter-spacing:-0.3px">{title}</h1>
 <p style="color:#FF8A33;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;margin:0;letter-spacing:3px;text-transform:uppercase;font-weight:600">Digitalagentur &middot; Cyber Security</p>
@@ -33,7 +33,7 @@ def _footer_html():
     return f"""<tr><td style="background:#0a0a0a;padding:36px 30px 28px;text-align:center;border-top:1px solid rgba(255,107,0,0.2)">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="text-align:center;padding-bottom:18px">
-<img src="{LOGO_URL}" alt="Zebick" width="109" height="32" class="zb-logo" style="display:inline-block;height:32px;width:109px;filter:brightness(0) invert(1);opacity:0.95" />
+<img src="{LOGO_URL}" alt="Zebick" width="109" height="32" class="zb-logo" style="display:inline-block;height:32px;width:109px;opacity:0.95" />
 </td></tr>
 <tr><td style="text-align:center;padding-bottom:14px">
 <div style="width:36px;height:2px;background:#FF6B00;margin:0 auto 14px;border-radius:1px;box-shadow:0 0 8px rgba(255,107,0,0.5)"></div>
@@ -71,8 +71,6 @@ DARK_MODE_STYLE = """<style>
   .zb-badge { background-color: #1B2127 !important; border-color: #2A3038 !important; }
   .zb-hr { border-top-color: #2A3038 !important; }
   a.zb-link { color: #FF8C32 !important; }
-  /* Logo swap — invert already-inverted logo back to white on dark */
-  img.zb-logo { filter: brightness(0) invert(1) !important; }
 }
 /* Gmail iOS specific */
 [data-ogsc] body, u + .body .zb-body { background-color: #0a0d10 !important; }
@@ -159,13 +157,13 @@ def build_templates():
 <div style="color:#FF6B00;font-size:16px;font-weight:700;margin-bottom:4px">Zebick</div>
 <div style="color:#666;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px">Digitalagentur &middot; Cyber Security</div>
 <div style="color:#333;font-size:13px;line-height:1.6">
-<a href="mailto:admin@zebick.com" style="color:#FF6B00;text-decoration:none">&#9993; admin@zebick.com</a><br>
+<a href="mailto:kontakt@zebick.com" style="color:#FF6B00;text-decoration:none">&#9993; kontakt@zebick.com</a><br>
 <a href="{PUBLIC_URL}" style="color:#FF6B00;text-decoration:none">&#127760; {PUBLIC_URL.replace('https://','')}</a>
 </div>
 <div style="color:#aaa;font-size:11px;margin-top:12px;font-style:italic;border-top:1px solid #eee;padding-top:10px">
 Vertraulichkeitshinweis: Diese E-Mail ist ausschlie&szlig;lich f&uuml;r den Empf&auml;nger bestimmt.
 </div></td></tr></table>""",
-            "body_text": "\n\n--\nZebick \u00b7 Digitalagentur & Cyber Security\nadmin@zebick.com \u00b7 zebick.com\n",
+            "body_text": "\n\n--\nZebick \u00b7 Digitalagentur & Cyber Security\nkontakt@zebick.com \u00b7 zebick.com\n",
             "available_vars": [],
         },
         {
@@ -269,11 +267,11 @@ Vertraulichkeitshinweis: Diese E-Mail ist ausschlie&szlig;lich f&uuml;r den Empf
                     "<td style='font-size:14px;color:#333;text-align:right;padding-top:6px'>{{timeline}}</td></tr></table>"
                 )
                 + _para("Lassen Sie uns in einem unverbindlichen Gespr\u00e4ch die Details besprechen und den besten Weg f\u00fcr Ihr Projekt finden.")
-                + _cta("\U0001F4C5 Termin vereinbaren", "mailto:admin@zebick.com?subject=Terminwunsch%20{{service}}")
+                + _cta("\U0001F4C5 Termin vereinbaren", "mailto:kontakt@zebick.com?subject=Terminwunsch%20{{service}}")
                 + _para("<strong style='color:#333'>Herzliche Gr\u00fc\u00dfe</strong><br>Ihr Zebick-Team")
                 + _footer_html()
             ),
-            "body_text": "Hallo {{name}},\n\nvielen Dank f\u00fcr Ihr Interesse an unserem Service {{service}}.\n\nLeistungspaket:\n\u2713 Kostenlose Erstberatung (60 Min.)\n\u2713 Individuelles Konzept & Zeitplan\n\u2713 Festpreis-Garantie\n\u2713 Support w\u00e4hrend der Projektlaufzeit\n\nInvestition: {{price}}\nZeitraum: {{timeline}}\n\nTermin vereinbaren: admin@zebick.com\n\nHerzliche Gr\u00fc\u00dfe\nIhr Zebick-Team",
+            "body_text": "Hallo {{name}},\n\nvielen Dank f\u00fcr Ihr Interesse an unserem Service {{service}}.\n\nLeistungspaket:\n\u2713 Kostenlose Erstberatung (60 Min.)\n\u2713 Individuelles Konzept & Zeitplan\n\u2713 Festpreis-Garantie\n\u2713 Support w\u00e4hrend der Projektlaufzeit\n\nInvestition: {{price}}\nZeitraum: {{timeline}}\n\nTermin vereinbaren: kontakt@zebick.com\n\nHerzliche Gr\u00fc\u00dfe\nIhr Zebick-Team",
             "available_vars": ["name", "email", "service", "company", "price", "timeline", "year"],
         },
         {
@@ -294,11 +292,11 @@ Vertraulichkeitshinweis: Diese E-Mail ist ausschlie&szlig;lich f&uuml;r den Empf
                 )
                 + _badges([("\u26A1", "Antwort in 24h"), ("\U0001F512", "100% vertraulich"), ("\u2B50", "Pers\u00f6nliche Beratung")])
                 + _para("Falls Sie dringend Hilfe ben\u00f6tigen, erreichen Sie uns auch direkt per E-Mail.")
-                + _cta("\u2709 Direkt antworten", "mailto:admin@zebick.com")
+                + _cta("\u2709 Direkt antworten", "mailto:kontakt@zebick.com")
                 + _para("<strong style='color:#333'>Herzliche Gr\u00fc\u00dfe</strong><br>Ihr Zebick-Team")
                 + _footer_html()
             ),
-            "body_text": "Hallo {{name}},\n\nvielen Dank f\u00fcr Ihre Nachricht! Wir melden uns innerhalb von 24 Stunden an Werktagen.\n\nIhre Anfrage:\n\"{{message_preview}}\"\n\nBei dringenden Fragen: admin@zebick.com\n\nHerzliche Gr\u00fc\u00dfe\nIhr Zebick-Team",
+            "body_text": "Hallo {{name}},\n\nvielen Dank f\u00fcr Ihre Nachricht! Wir melden uns innerhalb von 24 Stunden an Werktagen.\n\nIhre Anfrage:\n\"{{message_preview}}\"\n\nBei dringenden Fragen: kontakt@zebick.com\n\nHerzliche Gr\u00fc\u00dfe\nIhr Zebick-Team",
             "available_vars": ["name", "email", "message_preview", "service", "company", "year"],
         },
         {
@@ -400,11 +398,11 @@ Vertraulichkeitshinweis: Diese E-Mail ist ausschlie&szlig;lich f&uuml;r den Empf
                 )
                 + _badges([("\U0001F3C6", "Top-Qualit\u00e4t"), ("\u23F1\ufe0f", "Antwort in 24h"), ("\U0001F91D", "Unverbindlich")])
                 + _para("Bei dringenden Fragen erreichen Sie uns jederzeit direkt:")
-                + _cta("\u2709 Direkt kontaktieren", "mailto:admin@zebick.com")
+                + _cta("\u2709 Direkt kontaktieren", "mailto:kontakt@zebick.com")
                 + _para("<strong style='color:#333'>Herzliche Gr\u00fc\u00dfe</strong><br>Ihr Zebick-Team")
                 + _footer_html()
             ),
-            "body_text": "Hallo {{name}},\n\nvielen Dank f\u00fcr Ihre Anfrage zu {{service}}!\n\nEiner unserer Experten meldet sich innerhalb der n\u00e4chsten 24 Stunden bei Ihnen.\n\nIhre Daten:\nService: {{service}}\nE-Mail: {{email}}\nFirma: {{company}}\n{{budget_line}}\n\nBei dringenden Fragen: admin@zebick.com\n\nHerzliche Gr\u00fc\u00dfe\nIhr Zebick-Team",
+            "body_text": "Hallo {{name}},\n\nvielen Dank f\u00fcr Ihre Anfrage zu {{service}}!\n\nEiner unserer Experten meldet sich innerhalb der n\u00e4chsten 24 Stunden bei Ihnen.\n\nIhre Daten:\nService: {{service}}\nE-Mail: {{email}}\nFirma: {{company}}\n{{budget_line}}\n\nBei dringenden Fragen: kontakt@zebick.com\n\nHerzliche Gr\u00fc\u00dfe\nIhr Zebick-Team",
             "available_vars": ["name", "email", "service", "company", "budget_line", "year"],
         },
         {
