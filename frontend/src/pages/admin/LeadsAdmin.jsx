@@ -56,6 +56,15 @@ function ScoreBar({ score }) {
   );
 }
 
+function DetailRow({ label, value }) {
+  return (
+    <div>
+      <div style={{ fontSize: 11, color: '#9a9a9a', marginBottom: 2 }}>{label}</div>
+      <div style={{ fontSize: 13, color: '#fff', fontWeight: 500 }}>{value || '—'}</div>
+    </div>
+  );
+}
+
 export default function LeadsAdmin() {
   const [stats, setStats] = useState(null);
   const [leads, setLeads] = useState([]);
@@ -64,9 +73,13 @@ export default function LeadsAdmin() {
   const [filterSource, setFilterSource] = useState('all');
   const [search, setSearch] = useState('');
   const [minScore, setMinScore] = useState(0);
+  const [sortBy, setSortBy] = useState('created_at');
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [viewing, setViewing] = useState(null);
+  const [history, setHistory] = useState([]);
+  const [historyLoading, setHistoryLoading] = useState(false);
 
   const load = async () => {
     setLoading(true);
@@ -98,9 +111,35 @@ export default function LeadsAdmin() {
     return r;
   }, [leads, filterStatus, filterSource, search, minScore]);
 
+  const sorted = useMemo(() => {
+    const r = [...filtered];
+    if (sortBy === 'score') r.sort((a, b) => (b.score || 0) - (a.score || 0));
+    else if (sortBy === 'status') {
+      const order = STATUS.map((s) => s.v);
+      r.sort((a, b) => order.indexOf(a.status) - order.indexOf(b.status));
+    } else {
+      r.sort((a, b) => (b.created_at || '').localeCompare(a.created_at || ''));
+    }
+    return r;
+  }, [filtered, sortBy]);
+
   const openNew = () => { setEditing('new'); setForm(empty()); };
   const openEdit = (l) => { setEditing(l.id); setForm({ ...empty(), ...l, budget: l.budget ?? '' }); };
   const cancel = () => { setEditing(null); setForm(null); };
+
+  const openView = async (l) => {
+    setViewing(l);
+    setHistory([]);
+    setHistoryLoading(true);
+    try {
+      const r = await axios.get(`${BACKEND_URL}/api/admin/activities`, {
+        headers: authHeaders(), params: { related_id: l.id, limit: 20 },
+      });
+      setHistory(r.data.activities || []);
+    } catch (e) { console.error(e); }
+    setHistoryLoading(false);
+  };
+  const closeView = () => { setViewing(null); setHistory([]); };
 
   const save = async () => {
     if (!form.name || !form.email) return alert('Name & E-Mail nötig');
@@ -206,17 +245,22 @@ export default function LeadsAdmin() {
           <input type="range" min="0" max="100" value={minScore} onChange={(e) => setMinScore(parseInt(e.target.value))} style={{ width: 100 }} />
           <span style={{ color: '#FF6B00', fontWeight: 700, width: 30 }}>{minScore}</span>
         </div>
+        <select style={{ ...input, maxWidth: 160 }} value={sortBy} onChange={(e) => setSortBy(e.target.value)} data-testid="lead-sort">
+          <option value="created_at">Sortieren: Neueste</option>
+          <option value="score">Sortieren: Score</option>
+          <option value="status">Sortieren: Status</option>
+        </select>
       </div>
 
       {/* Lead list */}
       {loading && <div style={{ color: '#9a9a9a' }}>Lädt…</div>}
       <div style={{ display: 'grid', gap: 8 }} data-testid="leads-list">
-        {filtered.map((l) => {
+        {sorted.map((l) => {
           const st = STATUS.find((x) => x.v === l.status) || STATUS[0];
           const src = SOURCES.find((x) => x.v === l.source) || SOURCES[0];
           return (
             <div key={l.id} style={{ background: '#111111', border: '1px solid #222222', borderRadius: 8, padding: 14, display: 'grid', gridTemplateColumns: '1.5fr 1fr auto auto auto', gap: 12, alignItems: 'center' }}>
-              <div style={{ minWidth: 0 }}>
+              <div style={{ minWidth: 0, cursor: 'pointer' }} onClick={() => openView(l)} data-testid={`lead-view-${l.id}`}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                   <span style={{ fontWeight: 700, color: '#fff' }}>{l.name}</span>
                   {l.company && <span style={{ color: '#9a9a9a', fontSize: 12 }}>· {l.company}</span>}
@@ -252,7 +296,7 @@ export default function LeadsAdmin() {
             </div>
           );
         })}
-        {!loading && filtered.length === 0 && <div style={{ color: '#9a9a9a', textAlign: 'center', padding: 30 }}>Keine Leads gefunden.</div>}
+        {!loading && sorted.length === 0 && <div style={{ color: '#9a9a9a', textAlign: 'center', padding: 30 }}>Keine Leads gefunden.</div>}
       </div>
 
       {/* Modal */}
@@ -291,6 +335,62 @@ export default function LeadsAdmin() {
             <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 12 }}>
               <button onClick={cancel} style={btnSecondary}>Abbrechen</button>
               <button data-testid="lead-save-btn" onClick={save} disabled={saving} style={btnPrimary}><Save size={14} />{saving ? 'Speichert…' : 'Speichern'}</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Detail-Modal */}
+      {viewing && (
+        <div onClick={closeView} style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'grid', placeItems: 'center', padding: 20, zIndex: 100 }}>
+          <div onClick={(e) => e.stopPropagation()} data-testid="lead-detail-modal" style={{ background: '#111', borderRadius: 8, padding: 24, width: 640, maxWidth: '100%', maxHeight: '90vh', overflowY: 'auto', border: '1px solid #222' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 18 }}>
+              <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700, color: '#fff' }}>{viewing.name}</h2>
+              <button onClick={closeView} style={btnGhost}><X size={18} /></button>
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 16 }}>
+              <DetailRow label="E-Mail" value={viewing.email} />
+              <DetailRow label="Telefon" value={viewing.phone} />
+              <DetailRow label="Firma" value={viewing.company} />
+              <DetailRow label="Dienstleistung" value={viewing.service} />
+              <DetailRow label="Budget" value={viewing.budget ? `€${Number(viewing.budget).toLocaleString('de-DE')}` : null} />
+              <DetailRow label="Score" value={viewing.score} />
+              <DetailRow label="Status" value={(STATUS.find((s) => s.v === viewing.status) || {}).label} />
+              <DetailRow label="Quelle" value={(SOURCES.find((s) => s.v === viewing.source) || {}).label} />
+              <DetailRow label="Herkunft (Tags)" value={(viewing.tags || []).join(', ')} />
+              <DetailRow label="Erstellt am" value={viewing.created_at ? new Date(viewing.created_at).toLocaleString('de-DE') : null} />
+            </div>
+            {viewing.message && (
+              <div style={{ marginBottom: 14 }}>
+                <div style={{ fontSize: 11, color: '#9a9a9a', marginBottom: 4 }}>Nachricht</div>
+                <div style={{ color: '#fff', fontSize: 13, lineHeight: 1.5, background: '#0d0d0d', border: '1px solid #1c1c1c', borderRadius: 6, padding: 10, whiteSpace: 'pre-wrap' }}>{viewing.message}</div>
+              </div>
+            )}
+            {viewing.notes && (
+              <div style={{ marginBottom: 14 }}>
+                <div style={{ fontSize: 11, color: '#9a9a9a', marginBottom: 4 }}>Interne Notizen</div>
+                <div style={{ color: '#fff', fontSize: 13, lineHeight: 1.5, background: '#0d0d0d', border: '1px solid #1c1c1c', borderRadius: 6, padding: 10, whiteSpace: 'pre-wrap' }}>{viewing.notes}</div>
+              </div>
+            )}
+            <div>
+              <div style={{ fontSize: 11, color: '#9a9a9a', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em', fontWeight: 600 }}>Verlauf</div>
+              {historyLoading && <div style={{ color: '#6a6a6a', fontSize: 12 }}>Lädt…</div>}
+              {!historyLoading && history.length === 0 && <div style={{ color: '#6a6a6a', fontSize: 12 }}>Kein Verlauf vorhanden.</div>}
+              <div style={{ display: 'grid', gap: 6 }}>
+                {history.map((h) => (
+                  <div key={h.id} style={{ display: 'flex', gap: 10, fontSize: 12, color: '#9a9a9a', borderLeft: '2px solid #FF6B00', paddingLeft: 10 }}>
+                    <span style={{ color: '#6a6a6a', minWidth: 130, flexShrink: 0 }}>{new Date(h.timestamp).toLocaleString('de-DE')}</span>
+                    <span>
+                      <span style={{ color: '#fff' }}>{h.title}</span>
+                      {h.description && <span> — {h.description}</span>}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 18 }}>
+              <button onClick={closeView} style={btnSecondary}>Schließen</button>
+              <button onClick={() => { closeView(); openEdit(viewing); }} style={btnPrimary}><Edit2 size={14} />Bearbeiten</button>
             </div>
           </div>
         </div>

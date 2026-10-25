@@ -80,6 +80,61 @@ def compute_score(lead: Dict[str, Any]) -> int:
     return min(100, max(0, int(score)))
 
 
+# ============== Auto-capture from contact form / tool widgets ==============
+
+async def create_lead_from_submission(
+    *, name: str, email: str, phone: Optional[str], company: Optional[str],
+    service: Optional[str], budget_str: Optional[str], message: Optional[str],
+    origin_tag: str, request: Request,
+) -> None:
+    """Best-effort: turn a contact-form/tool submission into a CRM lead too.
+
+    Never raises — a failure here must never affect the contact-form response
+    the visitor actually waits on (same posture as the auto-reply/activity-log
+    calls right next to this one in routes/public.py).
+    """
+    try:
+        email_l = email.lower().strip()
+        # Dedup: an identical email with a lead created in the last 5 minutes
+        # is almost certainly a double-click/network retry, not a second real
+        # inquiry — skip it. Anything older is a genuine new lead, even from
+        # the same person (don't silently merge real repeat contacts).
+        window_start = (datetime.now(timezone.utc) - timedelta(minutes=5)).isoformat()
+        recent = await db.leads.find_one({"email": email_l, "created_at": {"$gte": window_start}})
+        if recent:
+            return
+
+        budget: Optional[float] = None
+        if budget_str:
+            try:
+                budget = float(budget_str)
+            except (TypeError, ValueError):
+                budget = None  # don't invent a number from unparseable input
+
+        doc = {
+            "id": str(uuid.uuid4()),
+            "name": name, "email": email_l, "phone": phone, "company": company,
+            "service": service, "budget": budget, "message": message,
+            "status": "new", "source": "website", "tags": [origin_tag],
+            "notes": None, "appointment_at": None, "assigned_to": None,
+            "created_at": _now_iso(), "updated_at": _now_iso(),
+            "created_by": "public",
+        }
+        doc["score"] = compute_score(doc)
+        await db.leads.insert_one(doc)
+
+        from routes.crm import log_activity
+        await log_activity(
+            "lead_created", f"Neuer Lead: {name}",
+            description=f"Herkunft: {origin_tag}",
+            actor="public", related_id=doc["id"], related_type="lead",
+        )
+        # Only an id + email in meta — never the message/phone/etc. in logs.
+        await audit_log("lead_created", "public", request, {"id": doc["id"], "email": email_l})
+    except Exception as e:  # noqa: BLE001
+        logger.error(f"Lead creation from submission failed: {e}")
+
+
 # ============== Models ==============
 
 class LeadIn(BaseModel):

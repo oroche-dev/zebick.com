@@ -274,6 +274,22 @@ async def submit_contact_form(request: Request, form_data: ContactFormSubmit):
     except Exception as e:  # noqa: BLE001
         logger.error(f"Contact activity log failed: {e}")
 
+    # Also capture every inbound request as a CRM lead (scoring, status
+    # pipeline, convert-to-customer) — origin inferred server-side from the
+    # same signals already used for the auto-reply greeting above.
+    from routes.leads import create_lead_from_submission
+    if contact.name.endswith("-Lead"):
+        origin_tag = f"Tool: {contact.service}" if contact.service else "Tool"
+    elif contact.service == "Erstgespräch":
+        origin_tag = "Beratung"
+    else:
+        origin_tag = "Kontaktformular"
+    await create_lead_from_submission(
+        name=contact.name, email=contact.email, phone=contact.phone, company=contact.company,
+        service=contact.service, budget_str=contact.budget, message=contact.message,
+        origin_tag=origin_tag, request=request,
+    )
+
     # Auto-reply to customer
     try:
         preview = (contact.message or "")[:200] + ("..." if len(contact.message or "") > 200 else "")

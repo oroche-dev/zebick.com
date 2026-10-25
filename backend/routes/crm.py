@@ -212,9 +212,11 @@ async def dashboard_overview(current: dict = Depends(require_crm_access)):
 @router.get("/admin/activities")
 async def list_activities(
     limit: int = 50,
+    related_id: Optional[str] = None,
     current: dict = Depends(require_crm_access),
 ):
-    rows = await db.activities.find({}, {"_id": 0}) \
+    query: Dict[str, Any] = {"related_id": related_id} if related_id else {}
+    rows = await db.activities.find(query, {"_id": 0}) \
         .sort("timestamp", -1).limit(min(max(1, limit), 500)).to_list(500)
     return {"total": len(rows), "activities": rows}
 
