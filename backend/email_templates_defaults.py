@@ -300,10 +300,35 @@ Vertraulichkeitshinweis: Diese E-Mail ist ausschlie&szlig;lich f&uuml;r den Empf
             "available_vars": ["name", "email", "message_preview", "service", "company", "year"],
         },
         {
-            "key": "newsletter_confirmation",
-            "name": "Newsletter-Best\u00e4tigung",
-            "description": "Wird beim Newsletter-Opt-In als Willkommens-Mail versendet.",
+            "key": "newsletter_confirm_doi",
+            "name": "Newsletter-Anmeldung best\u00e4tigen (Double-Opt-in)",
+            "description": "Wird sofort nach der Newsletter-Anmeldung versendet, bevor die Anmeldung aktiv wird.",
             "trigger": "POST /api/newsletter/subscribe",
+            "enabled": True,
+            "subject": "Bitte best\u00e4tige deine Newsletter-Anmeldung",
+            "body_html": _wrap(
+                _header_html("Newsletter best\u00e4tigen", "\U0001F4E7")
+                + _greeting("Hallo!",
+                            "Vielen Dank f\u00fcr dein Interesse an unserem Newsletter.<br><br>"
+                            "Du hast dich f\u00fcr den Newsletter unserer Website angemeldet. Damit wir sicherstellen "
+                            "k\u00f6nnen, dass diese Anmeldung tats\u00e4chlich von dir stammt, best\u00e4tige bitte deine "
+                            "E-Mail-Adresse \u00fcber den folgenden Button.")
+                + _cta("Newsletter-Anmeldung best\u00e4tigen", "{{confirm_url}}")
+                + _para("Nach deiner Best\u00e4tigung erh\u00e4ltst du unseren Newsletter mit Neuigkeiten, hilfreichen "
+                        "Tipps und relevanten Informationen zu unseren Themen.")
+                + _para("Du hast dich nicht f\u00fcr unseren Newsletter angemeldet? Dann kannst du diese E-Mail "
+                        "einfach ignorieren. Ohne deine Best\u00e4tigung wirst du nicht in unseren aktiven "
+                        "Newsletter-Verteiler aufgenommen.", color="#999")
+                + _footer_html()
+            ),
+            "body_text": "Hallo!\n\nVielen Dank f\u00fcr dein Interesse an unserem Newsletter.\n\nDu hast dich f\u00fcr den Newsletter unserer Website angemeldet. Damit wir sicherstellen k\u00f6nnen, dass diese Anmeldung tats\u00e4chlich von dir stammt, best\u00e4tige bitte deine E-Mail-Adresse \u00fcber diesen Link:\n{{confirm_url}}\n\nNach deiner Best\u00e4tigung erh\u00e4ltst du unseren Newsletter mit Neuigkeiten, hilfreichen Tipps und relevanten Informationen zu unseren Themen.\n\nDu hast dich nicht angemeldet? Dann ignoriere diese E-Mail einfach \u2014 ohne Best\u00e4tigung wirst du nicht aufgenommen.",
+            "available_vars": ["email", "confirm_url", "year"],
+        },
+        {
+            "key": "newsletter_confirmation",
+            "name": "Newsletter-Willkommen",
+            "description": "Wird versendet, nachdem die Newsletter-Anmeldung per Double-Opt-in best\u00e4tigt wurde.",
+            "trigger": "GET /api/newsletter/confirm (bei Erfolg)",
             "enabled": True,
             "subject": "Willkommen beim Zebick-Newsletter \U0001F680",
             "body_html": _wrap(
@@ -323,10 +348,10 @@ Vertraulichkeitshinweis: Diese E-Mail ist ausschlie&szlig;lich f&uuml;r den Empf
 </table></td></tr></table></td></tr>"""
                 + _para("Ihre E-Mail-Adresse: <strong style='color:#FF6B00'>{{email}}</strong>")
                 + _cta("\U0001F310 Zur Website", PUBLIC_URL)
-                + _para(f"Kein Interesse mehr? <a href='{PUBLIC_URL}/newsletter/unsubscribe?email={{{{email}}}}' style='color:#999;text-decoration:underline'>Hier abmelden</a>.", color="#999")
+                + _para(f"Kein Interesse mehr? <a href='{PUBLIC_URL}/newsletter/abmelden?email={{{{email}}}}' style='color:#999;text-decoration:underline'>Hier abmelden</a>.", color="#999")
                 + _footer_html()
             ),
-            "body_text": "Willkommen beim Zebick-Newsletter!\n\nAb sofort erhalten Sie regelm\u00e4\u00dfig Insights und Angebote.\n\n\u2022 Cyber Security & Webentwicklung Insights\n\u2022 Praxis-Tipps f\u00fcr digitale Transformation\n\u2022 Exklusive Angebote\n\u2022 Event-Einladungen\n\nIhre E-Mail: {{email}}\nAbmelden: zebick.com/newsletter/unsubscribe?email={{email}}\n\nHerzliche Gr\u00fc\u00dfe\nIhr Zebick-Team",
+            "body_text": "Willkommen beim Zebick-Newsletter!\n\nAb sofort erhalten Sie regelm\u00e4\u00dfig Insights und Angebote.\n\n\u2022 Cyber Security & Webentwicklung Insights\n\u2022 Praxis-Tipps f\u00fcr digitale Transformation\n\u2022 Exklusive Angebote\n\u2022 Event-Einladungen\n\nIhre E-Mail: {{email}}\nAbmelden: zebick.com/newsletter/abmelden?email={{email}}\n\nHerzliche Gr\u00fc\u00dfe\nIhr Zebick-Team",
             "available_vars": ["email", "year"],
         },
         {

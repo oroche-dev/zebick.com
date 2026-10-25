@@ -100,7 +100,9 @@ class NewsletterSubscriber(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     email: str
     subscribed_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
-    status: str = "active"
+    status: str = "pending"
+    confirmed_at: Optional[datetime] = None
+    consent_version: str = "zebick-newsletter-2026-10"
 
 
 # --- Contact form ---

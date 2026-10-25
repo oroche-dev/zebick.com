@@ -35,15 +35,11 @@ const Footer = () => {
       if (response.status === 200) {
         setIsSubscribed(true);
         setEmail('');
-        setTimeout(() => setIsSubscribed(false), 5000);
+        setTimeout(() => setIsSubscribed(false), 8000);
       }
     } catch (err) {
       console.error('Newsletter subscription error:', err);
-      if (err.response?.status === 400) {
-        setError('Diese E-Mail ist bereits registriert');
-      } else {
-        setError('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
-      }
+      setError('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.');
       setTimeout(() => setError(''), 5000);
     } finally {
       setIsLoading(false);
@@ -311,6 +307,14 @@ const Footer = () => {
                   {isLoading ? '…' : error ? '!' : isSubscribed ? '✓' : (<><Send size={12} /></>)}
                 </button>
               </form>
+              {isSubscribed && (
+                <p style={{ fontSize: '11px', color: '#10B981', marginTop: '8px', lineHeight: 1.5 }}>
+                  Fast geschafft — bitte bestätige deine Anmeldung über den Link in der E-Mail, die wir dir geschickt haben.
+                </p>
+              )}
+              {error && (
+                <p style={{ fontSize: '11px', color: '#EF4444', marginTop: '8px' }}>{error}</p>
+              )}
             </div>
           </div>
         </div>

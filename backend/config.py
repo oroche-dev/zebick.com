@@ -43,6 +43,9 @@ LOGIN_MAX_ATTEMPTS = int(os.environ.get("LOGIN_MAX_ATTEMPTS", "5"))
 LOGIN_LOCKOUT_MINUTES = int(os.environ.get("LOGIN_LOCKOUT_MINUTES", "15"))
 PASSWORD_MIN_LENGTH = int(os.environ.get("PASSWORD_MIN_LENGTH", "12"))
 
+PUBLIC_SITE_URL = os.environ.get("PUBLIC_SITE_URL", "https://www.zebick.com")
+NEWSLETTER_CONFIRM_TOKEN_HOURS = int(os.environ.get("NEWSLETTER_CONFIRM_TOKEN_HOURS", "24"))
+
 # Local backup folder. Defaults to <backend>/backups so it works on any host;
 # set BACKUP_DIR to keep using an absolute path (e.g. /var/backups/zebick).
 BACKUP_DIR = Path(os.environ.get("BACKUP_DIR") or ROOT_DIR / "backups")

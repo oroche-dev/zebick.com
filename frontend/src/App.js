@@ -25,6 +25,8 @@ const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const LogoPreviewPage = lazy(() => import('./pages/LogoPreviewPage'));
 const ReviewPage = lazy(() => import('./pages/ReviewPage'));
+const NewsletterConfirmPage = lazy(() => import('./pages/NewsletterConfirmPage'));
+const NewsletterUnsubscribePage = lazy(() => import('./pages/NewsletterUnsubscribePage'));
 const BlogPage = lazy(() => import('./pages/BlogPage'));
 const BlogPostPage = lazy(() => import('./pages/BlogPostPage'));
 const ImpressumPage = lazy(() => import('./pages/ImpressumPage'));
@@ -120,6 +122,8 @@ function App() {
           <Route path="/review" element={<ReviewPage />} />
           <Route path="/bewertung" element={<ReviewPage />} />
           <Route path="/bewertung-abgeben" element={<ReviewPage />} />
+          <Route path="/newsletter/bestaetigen" element={<NewsletterConfirmPage />} />
+          <Route path="/newsletter/abmelden" element={<NewsletterUnsubscribePage />} />
           <Route path="/blog" element={<BlogPage />} />
           <Route path="/blog/kategorie/:category" element={<BlogPage />} />
           <Route path="/blog/:slug" element={<BlogPostPage />} />

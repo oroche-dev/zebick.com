@@ -55,6 +55,7 @@ async def lifespan(_app: FastAPI):
         await db.audit_log.create_index("timestamp")
         await db.admin_users.create_index("email", unique=True)
         await db.newsletter_subscribers.create_index("email", unique=True)
+        await db.newsletter_subscribers.create_index("confirm_token_hash", unique=True, sparse=True)
         await db.inbox_emails.create_index([("mailbox", 1), ("uid", 1)], unique=True)
         await db.inbox_emails.create_index("date")
         await db.email_templates.create_index("key", unique=True)

@@ -1,6 +1,8 @@
 """Public (no-auth) endpoints: contact, newsletter, testimonials submit, leads, chat, game, status."""
 
-from datetime import datetime, timezone
+import hashlib
+import secrets
+from datetime import datetime, timedelta, timezone
 from typing import List, Optional
 
 import bleach
@@ -160,31 +162,78 @@ async def get_player_rank(player_name: str, score: int, game_id: str = "space-de
     return {"rank": higher + 1, "score": score, "player_name": sanitize_text(player_name, 20)}
 
 
-# ---------------- NEWSLETTER (public subscribe/unsubscribe) ----------------
+# ---------------- NEWSLETTER (double opt-in: subscribe/confirm/unsubscribe) ----------------
 
-@router.post("/newsletter/subscribe", response_model=NewsletterSubscriber)
+NEWSLETTER_GENERIC_RESPONSE = {
+    "message": "Bitte bestätige deine Anmeldung über den Link, den wir dir per E-Mail geschickt haben."
+}
+
+
+@router.post("/newsletter/subscribe")
 @limiter.limit("5/minute")
 async def subscribe_newsletter(request: Request, data: NewsletterSubscribe):
     email = data.email.lower().strip()
     existing = await db.newsletter_subscribers.find_one({"email": email})
-    if existing:
-        if existing.get("status") == "unsubscribed":
+
+    # Same response whether this email is new, pending, unsubscribed, or
+    # already confirmed — never leak registration status (see audit brief).
+    if not existing or existing.get("status") != "confirmed":
+        token = secrets.token_urlsafe(32)
+        token_hash = hashlib.sha256(token.encode()).hexdigest()
+        expires_at = (
+            datetime.now(timezone.utc) + timedelta(hours=config.NEWSLETTER_CONFIRM_TOKEN_HOURS)
+        ).isoformat()
+
+        if existing:
             await db.newsletter_subscribers.update_one(
                 {"email": email},
-                {"$set": {"status": "active",
-                          "subscribed_at": datetime.now(timezone.utc).isoformat()}},
+                {"$set": {
+                    "status": "pending",
+                    "subscribed_at": datetime.now(timezone.utc).isoformat(),
+                    "confirm_token_hash": token_hash,
+                    "confirm_token_expires_at": expires_at,
+                }},
             )
-            return NewsletterSubscriber(id=existing["id"], email=email, status="active")
-        raise HTTPException(status_code=400, detail="E-Mail ist bereits registriert")
-    s = NewsletterSubscriber(email=email)
-    doc = s.model_dump()
-    doc["subscribed_at"] = doc["subscribed_at"].isoformat()
-    await db.newsletter_subscribers.insert_one(doc)
+        else:
+            s = NewsletterSubscriber(email=email)
+            doc = s.model_dump()
+            doc["subscribed_at"] = doc["subscribed_at"].isoformat()
+            doc["confirm_token_hash"] = token_hash
+            doc["confirm_token_expires_at"] = expires_at
+            await db.newsletter_subscribers.insert_one(doc)
+
+        confirm_url = f"{config.PUBLIC_SITE_URL}/newsletter/bestaetigen?token={token}"
+        try:
+            await send_template_email("newsletter_confirm_doi", email, {"email": email, "confirm_url": confirm_url})
+        except Exception as e:  # noqa: BLE001
+            logger.error(f"Newsletter confirm-request email failed: {e}")
+
+    return NEWSLETTER_GENERIC_RESPONSE
+
+
+@router.get("/newsletter/confirm")
+@limiter.limit("10/minute")
+async def confirm_newsletter(request: Request, token: str):
+    token_hash = hashlib.sha256(token.encode()).hexdigest()
+    now_iso = datetime.now(timezone.utc).isoformat()
+    existing = await db.newsletter_subscribers.find_one({"confirm_token_hash": token_hash})
+    if not existing or existing.get("confirm_token_expires_at", "") < now_iso:
+        logger.warning("Newsletter confirm: invalid or expired token")
+        raise HTTPException(status_code=400, detail="Der Bestätigungslink ist ungültig oder abgelaufen.")
+
+    email = existing["email"]
+    await db.newsletter_subscribers.update_one(
+        {"email": email},
+        {
+            "$set": {"status": "confirmed", "confirmed_at": now_iso},
+            "$unset": {"confirm_token_hash": "", "confirm_token_expires_at": ""},
+        },
+    )
     try:
         await send_template_email("newsletter_confirmation", email, {"email": email})
     except Exception as e:  # noqa: BLE001
-        logger.error(f"Newsletter confirmation failed: {e}")
-    return s
+        logger.error(f"Newsletter welcome email failed: {e}")
+    return {"message": "Bestätigt"}
 
 
 @router.post("/newsletter/unsubscribe")
