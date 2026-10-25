@@ -83,8 +83,6 @@ DARK_MODE_STYLE = """<style>
 
 
 def _wrap(inner):
-    # Logo als dezentes Wasserzeichen im Body via background-image (Apple Mail, Gmail Web, neuere Outlook).
-    # Outlook desktop ignoriert es — dort einfach weisser Hintergrund, was OK ist.
     return f"""<!DOCTYPE html><html><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -96,7 +94,7 @@ def _wrap(inner):
 <body class="zb-body" style="margin:0;padding:0;background:#EDEFF2;font-family:'Helvetica Neue',Arial,sans-serif">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" class="zb-body" style="background:#EDEFF2;padding:32px 12px">
 <tr><td align="center">
-<table role="presentation" width="620" cellpadding="0" cellspacing="0" class="zb-card" style="max-width:620px;width:100%;background:#ffffff;background-image:url('{LOGO_URL}');background-repeat:no-repeat;background-position:center 320px;background-size:340px auto;border-radius:8px;overflow:hidden;box-shadow:0 8px 32px rgba(15,20,25,0.12),0 2px 8px rgba(15,20,25,0.06);border:1px solid rgba(15,20,25,0.04)">
+<table role="presentation" width="620" cellpadding="0" cellspacing="0" class="zb-card" style="max-width:620px;width:100%;background:#ffffff;border-radius:8px;overflow:hidden;box-shadow:0 8px 32px rgba(15,20,25,0.12),0 2px 8px rgba(15,20,25,0.06);border:1px solid rgba(15,20,25,0.04)">
 {inner}
 </table>
 <table role="presentation" width="620" cellpadding="0" cellspacing="0" style="max-width:620px;width:100%;margin-top:14px">
