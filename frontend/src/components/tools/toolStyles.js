@@ -40,6 +40,7 @@ export const submitLead = async ({ tool, payload, email, name, phone, budget, me
       phone: phone || '',
       service: tool,
       budget: budget || undefined,
+      tool_origin: tool,
       message: `[${tool}]\n${message}\n\nResultat:\n${JSON.stringify(payload, null, 2)}`,
     });
     toast.success('Ergebnis gesendet! Wir melden uns innerhalb von 24 h.');

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import {
   Mail, Phone, Send, CheckCircle, Layout, Building2, ShoppingCart, Cpu, Layers,
-  FileText, Store, Globe2, Plug, Sparkles, Palette, Calculator
+  FileText, Store, Globe2, Plug, Sparkles, Palette, Calculator, User
 } from 'lucide-react';
 import { baseCard, inputStyle, labelStyle, submitLead } from './toolStyles';
 
@@ -38,6 +38,8 @@ const WebsiteCalculator = ({ basePrices, featurePrices }) => {
   });
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [sent, setSent] = useState(false);
 
   const estimate = useMemo(() => {
@@ -213,13 +215,23 @@ const WebsiteCalculator = ({ basePrices, featurePrices }) => {
               email,
               phone,
               budget: String(Math.round((estimate.low + estimate.high) / 2)),
-              name: 'Kostenrechner-Lead',
+              name: `${firstName} ${lastName}`.trim() || 'Kostenrechner-Lead',
               message: 'Ich möchte ein verbindliches Angebot.',
               onSuccess: () => setSent(true),
             });
           }}
           style={{ marginTop: '28px', position: 'relative' }}
         >
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '14px' }}>
+            <div>
+              <label style={{ ...labelStyle, marginBottom: '8px' }}><User size={14} /> Vorname</label>
+              <input required value={firstName} onChange={(e) => setFirstName(e.target.value)} data-testid="calc-firstname" style={inputStyle} placeholder="Max" />
+            </div>
+            <div>
+              <label style={{ ...labelStyle, marginBottom: '8px' }}><User size={14} /> Nachname</label>
+              <input value={lastName} onChange={(e) => setLastName(e.target.value)} data-testid="calc-lastname" style={inputStyle} placeholder="Mustermann" />
+            </div>
+          </div>
           <label style={{ ...labelStyle, marginBottom: '8px' }}>
             <Mail size={14} /> Sende mir das genaue Angebot
           </label>
@@ -238,10 +250,10 @@ const WebsiteCalculator = ({ basePrices, featurePrices }) => {
           />
           <button
             type="submit"
-            disabled={!email || sent}
+            disabled={!email || !firstName || sent}
             data-testid="calc-submit"
             className="btn-primary"
-            style={{ width: '100%', justifyContent: 'center', marginTop: '12px', opacity: (!email || sent) ? 0.5 : 1 }}
+            style={{ width: '100%', justifyContent: 'center', marginTop: '12px', opacity: (!email || !firstName || sent) ? 0.5 : 1 }}
           >
             {sent ? <><CheckCircle size={18} /> Gesendet!</> : <>Angebot anfordern <Send size={18} /></>}
           </button>

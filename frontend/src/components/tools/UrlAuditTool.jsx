@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Globe, Mail, Phone, Zap, Send } from 'lucide-react';
+import { Globe, Mail, Phone, User, Zap, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { baseCard, inputStyle, labelStyle, submitLead } from './toolStyles';
 
@@ -7,6 +7,8 @@ const UrlAuditTool = ({ tool, intro, checks }) => {
   const [url, setUrl] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -77,6 +79,16 @@ const UrlAuditTool = ({ tool, intro, checks }) => {
             })}
           </div>
 
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', marginBottom: '12px', maxWidth: '400px' }}>
+            <div>
+              <label style={labelStyle}><User size={14} /> Vorname</label>
+              <input value={firstName} onChange={(e) => setFirstName(e.target.value)} data-testid={`${tool}-firstname`} style={inputStyle} placeholder="Max" />
+            </div>
+            <div>
+              <label style={labelStyle}><User size={14} /> Nachname</label>
+              <input value={lastName} onChange={(e) => setLastName(e.target.value)} data-testid={`${tool}-lastname`} style={inputStyle} placeholder="Mustermann" />
+            </div>
+          </div>
           <div style={{ marginBottom: '12px', maxWidth: '280px' }}>
             <label style={labelStyle}><Phone size={14} /> Telefon (optional)</label>
             <input type="tel" placeholder="+49 …" value={phone} onChange={(e) => setPhone(e.target.value)} data-testid={`${tool}-phone`} style={inputStyle} />
@@ -95,14 +107,14 @@ const UrlAuditTool = ({ tool, intro, checks }) => {
                 payload: { url, overall, results },
                 email,
                 phone,
-                name: 'Audit-Lead',
+                name: `${firstName} ${lastName}`.trim() || 'Audit-Lead',
                 message: `Bitte senden Sie mir den detaillierten Bericht zu ${url}.`,
               });
             }}
-            disabled={!email}
+            disabled={!email || !firstName}
             data-testid={`${tool}-send`}
             className="btn-primary"
-            style={{ width: '100%', justifyContent: 'center', opacity: !email ? 0.5 : 1 }}
+            style={{ width: '100%', justifyContent: 'center', opacity: (!email || !firstName) ? 0.5 : 1 }}
           >
             Detaillierten Bericht per E-Mail anfordern <Send size={18} />
           </button>

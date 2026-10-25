@@ -275,13 +275,14 @@ async def submit_contact_form(request: Request, form_data: ContactFormSubmit):
         logger.error(f"Contact activity log failed: {e}")
 
     # Also capture every inbound request as a CRM lead (scoring, status
-    # pipeline, convert-to-customer) — origin inferred server-side from the
-    # same signals already used for the auto-reply greeting above.
+    # pipeline, convert-to-customer) — origin comes from `tool_origin`, an
+    # internal marker only the tool widgets set (see ContactFormSubmit),
+    # never from guessing at the visitor-entered name.
     from routes.leads import create_lead_from_submission
-    if contact.name.endswith("-Lead"):
-        origin_tag = f"Tool: {contact.service}" if contact.service else "Tool"
-    elif contact.service == "Erstgespräch":
+    if form_data.tool_origin == "Erstgespräch":
         origin_tag = "Beratung"
+    elif form_data.tool_origin:
+        origin_tag = f"Tool: {form_data.tool_origin}"
     else:
         origin_tag = "Kontaktformular"
     await create_lead_from_submission(
@@ -298,12 +299,7 @@ async def submit_contact_form(request: Request, form_data: ContactFormSubmit):
             f"<td style='font-size:14px;color:#333;text-align:right;padding-top:6px'>{bleach.clean(contact.service)}</td></tr>"
         ) if contact.service else ""
         received_at = contact.submitted_at.strftime("%d.%m.%Y, %H:%M Uhr")
-        # Tool widgets (Kostenrechner, DSGVO-Check, ...) only collect an email,
-        # not a name, and fill this field with a placeholder like
-        # "Kostenrechner-Lead" so admins can spot the source in the contact
-        # list. That placeholder shouldn't greet the customer by name in their
-        # own confirmation email — use a neutral greeting instead.
-        greeting_name = f"Hallo {bleach.clean(contact.name)}," if not contact.name.endswith("-Lead") else "Hallo,"
+        greeting_name = f"Hallo {bleach.clean(contact.name)},"
         await send_template_email(
             "contact_confirmation",
             contact.email,

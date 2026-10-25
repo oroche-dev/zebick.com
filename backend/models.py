@@ -115,8 +115,13 @@ class ContactFormSubmit(BaseModel):
     service: Optional[str] = Field(None, max_length=100)
     budget: Optional[str] = Field(None, max_length=100)
     message: str = Field(min_length=1, max_length=5000)
+    # Set only by the internal tool widgets (via submitLead's `tool` param) to
+    # identify which tool/booking flow a submission came from, independent of
+    # whatever the visitor typed as their name — never shown to the visitor,
+    # used only to tag the resulting CRM lead's origin server-side.
+    tool_origin: Optional[str] = Field(None, max_length=60)
 
-    @field_validator("name", "phone", "company", "service", "budget", "message")
+    @field_validator("name", "phone", "company", "service", "budget", "message", "tool_origin")
     @classmethod
     def _strip_html(cls, v):
         return sanitize_text(v, max_length=5000) if v else v

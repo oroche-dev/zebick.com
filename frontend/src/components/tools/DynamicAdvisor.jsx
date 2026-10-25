@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as Icons from 'lucide-react';
-import { Mail, Phone, Send, Sparkles, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Mail, Phone, Send, Sparkles, ArrowLeft, CheckCircle2, User } from 'lucide-react';
 import { baseCard, inputStyle, labelStyle, submitLead } from './toolStyles';
 
 /**
@@ -17,6 +17,8 @@ const DynamicAdvisor = ({ config, compact = false }) => {
   const [answers, setAnswers] = useState({});
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [sent, setSent] = useState(false);
 
   const questions = Array.isArray(config?.questions) ? config.questions : [];
@@ -171,12 +173,22 @@ const DynamicAdvisor = ({ config, compact = false }) => {
                   payload: answers,
                   email,
                   phone,
-                  name: `${config?.title || 'Berater'}-Lead`,
+                  name: `${firstName} ${lastName}`.trim() || `${config?.title || 'Berater'}-Lead`,
                   message: `Empfehlung: ${recommendation}`,
                   onSuccess: () => setSent(true),
                 });
               }}
             >
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, marginBottom: 12 }}>
+                <div>
+                  <label style={labelStyle}><User size={14} /> Vorname</label>
+                  <input required value={firstName} onChange={(e) => setFirstName(e.target.value)} data-testid="advisor-firstname" style={inputStyle} placeholder="Max" />
+                </div>
+                <div>
+                  <label style={labelStyle}><User size={14} /> Nachname</label>
+                  <input value={lastName} onChange={(e) => setLastName(e.target.value)} data-testid="advisor-lastname" style={inputStyle} placeholder="Mustermann" />
+                </div>
+              </div>
               <label style={labelStyle}><Mail size={14} /> Detail-Konzept anfordern</label>
               <input
                 required
@@ -199,10 +211,10 @@ const DynamicAdvisor = ({ config, compact = false }) => {
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
                 <button
                   type="submit"
-                  disabled={!email}
+                  disabled={!email || !firstName}
                   data-testid="advisor-submit"
                   className="btn-primary"
-                  style={{ flex: 1, minWidth: 200, justifyContent: 'center', opacity: !email ? 0.5 : 1 }}
+                  style={{ flex: 1, minWidth: 200, justifyContent: 'center', opacity: (!email || !firstName) ? 0.5 : 1 }}
                 >
                   Detail-Konzept anfordern <Send size={18} />
                 </button>

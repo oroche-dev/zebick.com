@@ -22,6 +22,8 @@ const DsgvoCheck = () => {
   const [answers, setAnswers] = useState({});
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [submitted, setSubmitted] = useState(false);
 
   const yesCount = Object.values(answers).filter((v) => v === 'yes').length;
@@ -94,13 +96,23 @@ const DsgvoCheck = () => {
             payload: { score, answers },
             email,
             phone,
-            name: 'DSGVO-Lead',
+            name: `${firstName} ${lastName}`.trim() || 'DSGVO-Lead',
             message: 'Bitte senden Sie mir den DSGVO-Detailbericht.',
             onSuccess: () => setSubmitted(true),
           });
         }}
         style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}
       >
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+          <div>
+            <label style={labelStyle}><User size={14} /> Vorname</label>
+            <input required value={firstName} onChange={(e) => setFirstName(e.target.value)} data-testid="dsgvo-firstname" style={inputStyle} placeholder="Max" />
+          </div>
+          <div>
+            <label style={labelStyle}><User size={14} /> Nachname</label>
+            <input value={lastName} onChange={(e) => setLastName(e.target.value)} data-testid="dsgvo-lastname" style={inputStyle} placeholder="Mustermann" />
+          </div>
+        </div>
         <div style={{ display: 'grid', gridTemplateColumns: '2fr auto', gap: '12px', alignItems: 'end' }}>
           <div>
             <label style={labelStyle}><Mail size={14} /> Detaillierten Bericht erhalten</label>
@@ -113,10 +125,10 @@ const DsgvoCheck = () => {
           </div>
           <button
             type="submit"
-            disabled={!email || !allAnswered || submitted}
+            disabled={!email || !firstName || !allAnswered || submitted}
             data-testid="dsgvo-send"
             className="btn-primary"
-            style={{ padding: '14px 24px', opacity: (!email || !allAnswered || submitted) ? 0.5 : 1 }}
+            style={{ padding: '14px 24px', opacity: (!email || !firstName || !allAnswered || submitted) ? 0.5 : 1 }}
           >
             {submitted ? <><CheckCircle size={16} /> Gesendet</> : <>Bericht senden <Send size={16} /></>}
           </button>
