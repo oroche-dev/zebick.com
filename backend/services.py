@@ -7,7 +7,10 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 from email import encoders
 
+import base64
+
 import aiosmtplib
+import httpx
 
 import config
 
@@ -132,10 +135,43 @@ def _build_message(
     return msg
 
 
+async def _send_via_resend(
+    to_email: str, subject: str, html_content: str, text_content: Optional[str],
+    attachments: Optional[List[Tuple[str, bytes, str]]],
+) -> bool:
+    payload: Dict[str, Any] = {
+        "from": f"{config.SMTP_FROM_NAME} <{config.SMTP_FROM_EMAIL}>",
+        "to": [to_email],
+        "subject": subject,
+        "html": html_content,
+    }
+    if text_content:
+        payload["text"] = text_content
+    if attachments:
+        payload["attachments"] = [
+            {"filename": filename, "content": base64.b64encode(data).decode()}
+            for filename, data, _mime_type in attachments
+        ]
+    async with httpx.AsyncClient(timeout=20) as client:
+        resp = await client.post(
+            "https://api.resend.com/emails",
+            headers={"Authorization": f"Bearer {config.RESEND_API_KEY}"},
+            json=payload,
+        )
+    resp.raise_for_status()
+    return True
+
+
 async def send_email(
     to_email: str, subject: str, html_content: str, text_content: str = None,
     attachments: Optional[List[Tuple[str, bytes, str]]] = None,
 ) -> bool:
+    if config.RESEND_API_KEY:
+        try:
+            return await _send_via_resend(to_email, subject, html_content, text_content, attachments)
+        except Exception as e:  # noqa: BLE001
+            logger.error(f"Resend send failed {to_email}: {e}")
+            return False
     if not _smtp_configured():
         logger.warning("SMTP not configured - skipping email")
         return False

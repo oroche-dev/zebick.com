@@ -53,6 +53,9 @@ CORS_ORIGINS = [
 
 # --- Third-party (optional) ---
 LLM_API_KEY = os.environ.get("LLM_API_KEY")
+# Preferred email transport: sends over HTTPS, so it works on hosts (e.g.
+# Render) that block outbound SMTP ports. Falls back to SMTP below when unset.
+RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 SMTP_HOST = os.environ.get("SMTP_HOST")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
 SMTP_USERNAME = os.environ.get("SMTP_USERNAME")
