@@ -280,24 +280,34 @@ Vertraulichkeitshinweis: Diese E-Mail ist ausschlie&szlig;lich f&uuml;r den Empf
             "description": "Wird automatisch an Kunden gesendet, die das Kontaktformular ausf\u00fcllen.",
             "trigger": "POST /api/contact/submit",
             "enabled": True,
-            "subject": "Vielen Dank f\u00fcr Ihre Anfrage, {{name}}!",
+            "subject": "Wir haben deine Anfrage erhalten \u2013 {{COMPANY_NAME}}",
             "body_html": _wrap(
-                _header_html("Anfrage erhalten", "\u2728")
+                _header_html("Vielen Dank f\u00fcr deine Nachricht!", "\u2728")
                 + _greeting("Hallo {{name}},",
-                            "vielen Dank f\u00fcr Ihre Nachricht! Wir haben Ihre Anfrage erhalten und melden uns bei Ihnen so schnell wie m\u00f6glich &mdash; "
-                            "in der Regel innerhalb von <strong style='color:#FF6B00'>24 Stunden</strong> an Werktagen.")
+                            "vielen Dank f\u00fcr deine Kontaktaufnahme und dein Interesse an unseren Dienstleistungen.<br><br>"
+                            "Wir haben deine Anfrage erfolgreich erhalten. Unser Team wird deine Nachricht pr\u00fcfen und sich so bald wie m\u00f6glich bei dir melden.")
                 + _box(
-                    "<div style='font-size:12px;color:#999;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-weight:600'>Ihre Anfrage</div>"
-                    "<div style='font-style:italic;color:#333;font-size:15px;line-height:1.7'>&bdquo;{{message_preview}}&ldquo;</div>"
+                    "<div style='font-size:12px;color:#999;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;font-weight:600'>Deine Anfrage im \u00dcberblick</div>"
+                    "<table role='presentation' width='100%' cellpadding='0' cellspacing='0' style='font-size:14px'>"
+                    "<tr><td style='font-size:13px;color:#666'>Referenznummer</td>"
+                    "<td style='font-size:13px;color:#333;text-align:right;font-family:monospace'>{{reference_id}}</td></tr>"
+                    "{{subject_row}}"
+                    "<tr><td style='font-size:13px;color:#666;padding-top:6px'>Eingangsdatum</td>"
+                    "<td style='font-size:14px;color:#333;text-align:right;padding-top:6px'>{{received_at}}</td></tr>"
+                    "</table>"
                 )
-                + _badges([("\u26A1", "Antwort in 24h"), ("\U0001F512", "100% vertraulich"), ("\u2B50", "Pers\u00f6nliche Beratung")])
-                + _para("Falls Sie dringend Hilfe ben\u00f6tigen, erreichen Sie uns auch direkt per E-Mail.")
-                + _cta("\u2709 Direkt antworten", "mailto:kontakt@zebick.com")
-                + _para("<strong style='color:#333'>Herzliche Gr\u00fc\u00dfe</strong><br>Ihr Zebick-Team")
+                + _para("Du musst nichts weiter unternehmen. Wir melden uns bei dir \u00fcber die von dir angegebene E-Mail-Adresse.")
+                + _box(
+                    "<div style='font-size:12px;color:#999;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px;font-weight:600'>Deine Nachricht</div>"
+                    "<div style='font-style:italic;color:#333;font-size:14px;line-height:1.7'>&bdquo;{{message_preview}}&ldquo;</div>",
+                    border_color="#E5E7EB", bg="#FAFBFC"
+                )
+                + _para("Falls du weitere Informationen erg\u00e4nzen m\u00f6chtest, kannst du uns unter <a href='mailto:{{CONTACT_EMAIL}}' style='color:#FF6B00'>{{CONTACT_EMAIL}}</a> erreichen.")
+                + _para("Freundliche Gr\u00fc\u00dfe<br><strong style='color:#333'>Dein {{COMPANY_NAME}}-Team</strong>")
                 + _footer_html()
             ),
-            "body_text": "Hallo {{name}},\n\nvielen Dank f\u00fcr Ihre Nachricht! Wir melden uns innerhalb von 24 Stunden an Werktagen.\n\nIhre Anfrage:\n\"{{message_preview}}\"\n\nBei dringenden Fragen: kontakt@zebick.com\n\nHerzliche Gr\u00fc\u00dfe\nIhr Zebick-Team",
-            "available_vars": ["name", "email", "message_preview", "service", "company", "year"],
+            "body_text": "Hallo {{name}},\n\nvielen Dank f\u00fcr deine Kontaktaufnahme und dein Interesse an unseren Dienstleistungen.\n\nWir haben deine Anfrage erfolgreich erhalten. Unser Team wird deine Nachricht pr\u00fcfen und sich so bald wie m\u00f6glich bei dir melden.\n\nDeine Anfrage im \u00dcberblick:\nReferenznummer: {{reference_id}}\nBetreff: {{service}}\nEingangsdatum: {{received_at}}\n\nDu musst nichts weiter unternehmen. Wir melden uns bei dir \u00fcber die von dir angegebene E-Mail-Adresse.\n\nDeine Nachricht:\n\"{{message_preview}}\"\n\nFalls du weitere Informationen erg\u00e4nzen m\u00f6chtest, erreichst du uns unter {{CONTACT_EMAIL}}.\n\nFreundliche Gr\u00fc\u00dfe\nDein {{COMPANY_NAME}}-Team",
+            "available_vars": ["name", "email", "message_preview", "service", "company", "reference_id", "subject_row", "received_at", "year"],
         },
         {
             "key": "newsletter_confirm_doi",

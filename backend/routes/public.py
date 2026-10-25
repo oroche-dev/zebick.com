@@ -277,12 +277,18 @@ async def submit_contact_form(request: Request, form_data: ContactFormSubmit):
     # Auto-reply to customer
     try:
         preview = (contact.message or "")[:200] + ("..." if len(contact.message or "") > 200 else "")
+        subject_row = (
+            f"<tr><td style='font-size:13px;color:#666;padding-top:6px'>Betreff</td>"
+            f"<td style='font-size:14px;color:#333;text-align:right;padding-top:6px'>{bleach.clean(contact.service)}</td></tr>"
+        ) if contact.service else ""
+        received_at = contact.submitted_at.strftime("%d.%m.%Y, %H:%M Uhr")
         await send_template_email(
             "contact_confirmation",
             contact.email,
             {"name": contact.name, "email": contact.email,
              "message_preview": preview, "service": contact.service or "",
-             "company": contact.company or ""},
+             "company": contact.company or "",
+             "reference_id": contact.id, "subject_row": subject_row, "received_at": received_at},
         )
     except Exception as e:  # noqa: BLE001
         logger.error(f"Contact auto-reply failed: {e}")
