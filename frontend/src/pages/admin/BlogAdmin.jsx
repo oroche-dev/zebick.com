@@ -182,7 +182,7 @@ const BlogAdmin = () => {
                 border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-xl)', overflow: 'hidden',
               }}>
                 <div style={{ position: 'relative', aspectRatio: '16/10', background: '#111' }}>
-                  {p.cover_image && <img src={p.cover_image} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                  {p.cover_image && <img src={p.cover_image} alt={p.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
                   <div style={{ position: 'absolute', top: '10px', right: '10px', display: 'flex', gap: '6px' }}>
                     {p.featured && <span style={{ padding: '3px 9px', background: 'rgba(255,107,0,0.9)', color: '#000', fontSize: '10px', fontWeight: 700, borderRadius: '999px' }}>FEATURED</span>}
                     {!p.published && <span style={{ padding: '3px 9px', background: 'rgba(0,0,0,0.8)', color: '#fff', fontSize: '10px', fontWeight: 600, borderRadius: '999px', border: '1px solid rgba(255,255,255,0.2)' }}>Entwurf</span>}

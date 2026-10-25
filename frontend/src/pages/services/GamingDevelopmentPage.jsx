@@ -387,7 +387,7 @@ const GamingDevelopmentPage = () => {
                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = p.color; e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 20px 40px ${p.color}25`; }}
                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
-                  <img src={p.logo} alt={p.name} width="44" height="44" style={{ objectFit: 'contain' }} />
+                  <img src={p.logo} alt={p.name} width="44" height="44" loading="lazy" style={{ objectFit: 'contain' }} />
                   <div>
                     <h3 style={{ fontSize: '18px', fontWeight: 700 }}>{p.name}</h3>
                     <span style={{ fontSize: '12px', color: p.color }}>{p.audience}</span>
@@ -414,7 +414,7 @@ const GamingDevelopmentPage = () => {
                     <tr key={p.name} style={{ borderBottom: i < GAME_PLATFORMS.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}>
                       <td style={{ padding: '20px 24px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <img src={p.logo} alt={p.name} width="28" height="28" style={{ objectFit: 'contain' }} />
+                          <img src={p.logo} alt={p.name} width="28" height="28" loading="lazy" style={{ objectFit: 'contain' }} />
                           <span style={{ fontWeight: 600 }}>{p.name}</span>
                         </div>
                       </td>
@@ -564,7 +564,7 @@ const CrossPlatformRelease = () => (
         {p.mask ? (
           <span style={{ width: 18, height: 18, display: 'inline-block', backgroundColor: '#fff', WebkitMaskImage: `url(${p.logo})`, maskImage: `url(${p.logo})`, WebkitMaskSize: 'contain', maskSize: 'contain', WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat', WebkitMaskPosition: 'center', maskPosition: 'center' }} />
         ) : (
-          <img src={p.logo} alt={p.n} />
+          <img src={p.logo} alt={p.n} loading="lazy" />
         )}
       </span>
     ))}

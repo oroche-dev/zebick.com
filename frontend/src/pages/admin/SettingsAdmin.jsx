@@ -58,7 +58,7 @@ export default function SettingsAdmin() {
           <Field label="Logo">
             <div style={{ display: 'flex', gap: 12, alignItems: 'flex-end' }}>
               <div style={{ width: 120, height: 80, background: '#000', borderRadius: 10, border: '1px solid rgba(255,255,255,0.08)', display: 'grid', placeItems: 'center', overflow: 'hidden' }}>
-                {form.logo_url ? <img src={form.logo_url} alt="" style={{ maxWidth: '100%', maxHeight: '100%' }} /> : <ImageIcon size={30} color="#444" />}
+                {form.logo_url ? <img src={form.logo_url} alt="" loading="lazy" style={{ maxWidth: '100%', maxHeight: '100%' }} /> : <ImageIcon size={30} color="#444" />}
               </div>
               <label style={{ ...btnSecondary, display: 'inline-flex', cursor: 'pointer' }}>
                 <Upload size={14} /> Logo hochladen

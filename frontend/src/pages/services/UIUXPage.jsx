@@ -362,7 +362,7 @@ const UIUXPage = () => {
                     {item.logo.includes('cdn.jsdelivr.net/npm/simple-icons') ? (
                       <div aria-hidden style={{ width: 18, height: 18, flexShrink: 0, backgroundColor: item.color, WebkitMaskImage: `url(${item.logo})`, maskImage: `url(${item.logo})`, WebkitMaskSize: 'contain', maskSize: 'contain', WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat', WebkitMaskPosition: 'center', maskPosition: 'center' }} />
                     ) : (
-                      <img src={item.logo} alt={item.label} style={{ width: 18, height: 18, objectFit: 'contain' }} />
+                      <img src={item.logo} alt={item.label} loading="lazy" style={{ width: 18, height: 18, objectFit: 'contain' }} />
                     )}
                     <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>{item.label}</span>
                   </div>
@@ -599,7 +599,7 @@ const UIUXPage = () => {
                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = t.color; e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 20px 40px ${t.color}25`; }}
                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
-                  <img src={t.logo} alt={t.tool} width="44" height="44" style={{ objectFit: 'contain' }} />
+                  <img src={t.logo} alt={t.tool} width="44" height="44" loading="lazy" style={{ objectFit: 'contain' }} />
                   <div>
                     <h3 style={{ fontSize: '18px', fontWeight: 700 }}>{t.phase}</h3>
                     <span style={{ fontSize: '12px', color: t.color }}>{t.tool}</span>
@@ -631,7 +631,7 @@ const UIUXPage = () => {
                     <tr key={t.phase} style={{ borderBottom: i < UX_PROCESS_TOOLS.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}>
                       <td style={{ padding: '20px 24px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <img src={t.logo} alt={t.tool} width="28" height="28" style={{ objectFit: 'contain' }} />
+                          <img src={t.logo} alt={t.tool} width="28" height="28" loading="lazy" style={{ objectFit: 'contain' }} />
                           <span style={{ fontWeight: 600 }}>{t.phase}</span>
                         </div>
                       </td>
@@ -971,7 +971,7 @@ const StickyNoteBoard = () => (
         className="uiux-sticky"
         style={{ background: `${s.c}22`, borderColor: `${s.c}55`, color: s.c, animationDelay: `${i * 0.5}s`, '--rot': `${(i % 2 === 0 ? -1 : 1) * (3 + i)}deg` }}
       >
-        <img src={s.logo} alt={s.l} className="uiux-sticky-logo" />
+        <img src={s.logo} alt={s.l} className="uiux-sticky-logo" loading="lazy" />
         {s.l}
       </span>
     ))}

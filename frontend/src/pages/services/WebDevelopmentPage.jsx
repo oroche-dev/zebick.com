@@ -294,7 +294,7 @@ const WebDevelopmentPage = () => {
                     {item.logo.includes('cdn.jsdelivr.net/npm/simple-icons') ? (
                       <div aria-hidden style={{ width: 18, height: 18, flexShrink: 0, backgroundColor: item.color, WebkitMaskImage: `url(${item.logo})`, maskImage: `url(${item.logo})`, WebkitMaskSize: 'contain', maskSize: 'contain', WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat', WebkitMaskPosition: 'center', maskPosition: 'center' }} />
                     ) : (
-                      <img src={item.logo} alt={item.label} style={{ width: 18, height: 18, objectFit: 'contain' }} />
+                      <img src={item.logo} alt={item.label} loading="lazy" style={{ width: 18, height: 18, objectFit: 'contain' }} />
                     )}
                     <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>{item.label}</span>
                   </div>
@@ -544,7 +544,7 @@ const WebDevelopmentPage = () => {
                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = db.color; e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 20px 40px ${db.color}25`; }}
                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
-                  <img src={db.logo} alt={db.name} width="44" height="44" style={{ objectFit: 'contain' }} />
+                  <img src={db.logo} alt={db.name} width="44" height="44" loading="lazy" style={{ objectFit: 'contain' }} />
                   <div>
                     <h3 style={{ fontSize: '18px', fontWeight: 700 }}>{db.name}</h3>
                     <span style={{ fontSize: '12px', color: db.color }}>{db.type}</span>
@@ -571,7 +571,7 @@ const WebDevelopmentPage = () => {
                     <tr key={db.name} style={{ borderBottom: i < DATABASES.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}>
                       <td style={{ padding: '20px 24px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <img src={db.logo} alt={db.name} width="28" height="28" style={{ objectFit: 'contain' }} />
+                          <img src={db.logo} alt={db.name} width="28" height="28" loading="lazy" style={{ objectFit: 'contain' }} />
                           <span style={{ fontWeight: 600 }}>{db.name}</span>
                         </div>
                       </td>
@@ -704,7 +704,7 @@ const LayerStack = () => (
   <div className="web-layers">
     {WEB_LAYERS.map((row, i) => (
       <div key={row.l} className="web-layer" style={{ animationDelay: `${i * 0.5}s` }}>
-        <img src={row.logo} alt={row.l} className="web-layer-logo" />
+        <img src={row.logo} alt={row.l} className="web-layer-logo" loading="lazy" />
         {row.l}
       </div>
     ))}

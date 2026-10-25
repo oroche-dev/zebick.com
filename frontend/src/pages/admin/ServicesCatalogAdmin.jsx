@@ -90,7 +90,7 @@ export default function ServicesCatalogAdmin() {
             borderRadius: 12, padding: 14, display: 'flex', gap: 14, alignItems: 'center',
           }}>
             <div style={{ width: 60, height: 60, borderRadius: 10, background: '#000', overflow: 'hidden', flexShrink: 0 }}>
-              {s.image ? <img src={s.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
+              {s.image ? <img src={s.image} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : null}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
@@ -132,7 +132,7 @@ export default function ServicesCatalogAdmin() {
             </div>
             <Field label="Bild">
               <div style={{ aspectRatio: '16/9', borderRadius: 10, overflow: 'hidden', background: '#000', border: '1px solid rgba(255,255,255,0.08)', display: 'grid', placeItems: 'center', marginBottom: 8 }}>
-                {form.image ? <img src={form.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={36} color="#444" />}
+                {form.image ? <img src={form.image} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={36} color="#444" />}
               </div>
               <label style={{ ...btnSecondary, display: 'inline-flex', cursor: 'pointer' }}>
                 <Upload size={14} /> Datei hochladen

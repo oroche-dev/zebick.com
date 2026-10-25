@@ -100,6 +100,7 @@ const DeepDiveSection = ({
           <img
             src={hero.image}
             alt={hero.alt || hero.title}
+            loading="lazy"
             style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
           />
           <div style={{

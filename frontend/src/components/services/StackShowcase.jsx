@@ -240,7 +240,7 @@ export const TechBelt = ({ tools, path = DEFAULT_BELT_PATH, dur = 18 }) => {
           <foreignObject x="-20" y="-20" width="40" height="40" style={{ overflow: 'visible' }}>
             <div style={{ width: 40, height: 40, borderRadius: 'var(--radius-md)', background: `${t.color}18`, border: `1px solid ${t.color}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: `0 8px 18px ${t.color}30` }}>
               {!errored[t.name] ? (
-                <img src={t.logo} alt={t.name} style={{ width: 22, height: 22, objectFit: 'contain' }} onError={() => setErrored((p) => ({ ...p, [t.name]: true }))} />
+                <img src={t.logo} alt={t.name} loading="lazy" style={{ width: 22, height: 22, objectFit: 'contain' }} onError={() => setErrored((p) => ({ ...p, [t.name]: true }))} />
               ) : (
                 <span style={{ fontSize: 13, fontWeight: 800, color: t.color }}>{t.name.charAt(0)}</span>
               )}

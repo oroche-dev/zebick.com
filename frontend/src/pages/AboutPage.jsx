@@ -151,7 +151,7 @@ const AboutPage = () => {
                     'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&q=80&auto=format&fit=crop',
                     'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80&auto=format&fit=crop',
                   ].map((src, i) => (
-                    <img key={i} src={src} alt={`Team ${i+1}`} style={{
+                    <img key={i} src={src} alt={`Team ${i+1}`} loading="lazy" style={{
                       width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover',
                       border: '2px solid #0a0a0a', marginLeft: i === 0 ? 0 : '-10px',
                     }} />
@@ -205,7 +205,7 @@ const AboutPage = () => {
                       onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.6'; }}
                     >
                       {p.Component ? <p.Component size={p.h} /> : (
-                        <img src={p.src} alt={p.name} style={{ height: `${p.h}px`, maxWidth: '100%', objectFit: 'contain' }} />
+                        <img src={p.src} alt={p.name} loading="lazy" style={{ height: `${p.h}px`, maxWidth: '100%', objectFit: 'contain' }} />
                       )}
                     </div>
                   ))}
@@ -221,7 +221,7 @@ const AboutPage = () => {
                         height: '32px', flexShrink: 0, opacity: 0.6,
                       }}>
                         {p.Component ? <p.Component size={p.h} /> : (
-                          <img src={p.src} alt="" style={{ height: `${p.h}px`, maxWidth: 'none', objectFit: 'contain' }} />
+                          <img src={p.src} alt="" loading="lazy" style={{ height: `${p.h}px`, maxWidth: 'none', objectFit: 'contain' }} />
                         )}
                       </div>
                     ))}
@@ -291,7 +291,7 @@ const AboutPage = () => {
                     onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.06)'; }}
                   >
                     <div className="about-tl-img" style={{ position: 'relative', minHeight: '160px', background: '#0a0a0a', overflow: 'hidden' }}>
-                      <img src={it.img} alt={it.title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'absolute', inset: 0, filter: 'brightness(0.85) saturate(0.9)' }} />
+                      <img src={it.img} alt={it.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', position: 'absolute', inset: 0, filter: 'brightness(0.85) saturate(0.9)' }} />
                       <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, transparent 50%, rgba(0,0,0,0.5) 100%)' }} />
                     </div>
                     <div style={{ padding: '22px 26px', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -460,7 +460,7 @@ const AboutPage = () => {
                   height: '40px', flexShrink: 0, opacity: 0.85,
                 }}>
                   {c.Component ? <c.Component size={c.h} /> : (
-                    <img src={c.src} alt="" style={{ height: `${c.h}px`, maxWidth: 'none', objectFit: 'contain' }} />
+                    <img src={c.src} alt="" loading="lazy" style={{ height: `${c.h}px`, maxWidth: 'none', objectFit: 'contain' }} />
                   )}
                 </div>
               ))}
@@ -649,7 +649,7 @@ const CertCard = ({ c }) => (
       {c.Component ? (
         <c.Component size={c.h} />
       ) : (
-        <img src={c.src} alt={c.name} style={{ height: `${c.h}px`, maxWidth: '100%', objectFit: 'contain' }} />
+        <img src={c.src} alt={c.name} loading="lazy" style={{ height: `${c.h}px`, maxWidth: '100%', objectFit: 'contain' }} />
       )}
     </div>
     <div style={{ textAlign: 'center' }}>

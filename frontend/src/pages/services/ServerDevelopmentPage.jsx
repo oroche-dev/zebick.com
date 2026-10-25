@@ -486,7 +486,7 @@ const ServerDevelopmentPage = () => {
                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
                   <div style={{ width: '44px', height: '44px', borderRadius: 'var(--radius-md)', background: `${l.color}20`, border: `1px solid ${l.color}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <img src={l.logo} alt={l.name} width="26" height="26" style={{ objectFit: 'contain' }} />
+                    <img src={l.logo} alt={l.name} width="26" height="26" loading="lazy" style={{ objectFit: 'contain' }} />
                   </div>
                   <h3 style={{ fontSize: '18px', fontWeight: 700 }}>{l.name}</h3>
                 </div>
@@ -511,7 +511,7 @@ const ServerDevelopmentPage = () => {
                     <tr key={l.name} style={{ borderBottom: i < LOESUNGEN.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}>
                       <td style={{ padding: '20px 24px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <img src={l.logo} alt={l.name} width="20" height="20" style={{ objectFit: 'contain' }} />
+                          <img src={l.logo} alt={l.name} width="20" height="20" loading="lazy" style={{ objectFit: 'contain' }} />
                           <span style={{ fontWeight: 600 }}>{l.name}</span>
                         </div>
                       </td>
@@ -674,7 +674,7 @@ const ServerRackStatus = () => (
     {SRV_RACK_TOOLS.map((t, i) => (
       <div key={t.n} className="srv-rack-unit">
         <span className="srv-rack-led" style={{ animationDelay: `${i * 0.3}s` }} />
-        <img src={t.logo} alt={t.n} className="srv-rack-logo" />
+        <img src={t.logo} alt={t.n} className="srv-rack-logo" loading="lazy" />
         <span className="srv-rack-bars" />
       </div>
     ))}

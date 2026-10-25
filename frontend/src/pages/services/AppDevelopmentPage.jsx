@@ -625,7 +625,7 @@ const AppDevelopmentPage = () => {
                    onMouseEnter={(e) => { e.currentTarget.style.borderColor = p.color; e.currentTarget.style.transform = 'translateY(-6px)'; e.currentTarget.style.boxShadow = `0 20px 40px ${p.color}25`; }}
                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
-                  <img src={p.logo} alt={p.name} width="44" height="44" style={{ objectFit: 'contain' }} />
+                  <img src={p.logo} alt={p.name} width="44" height="44" loading="lazy" style={{ objectFit: 'contain' }} />
                   <div>
                     <h3 style={{ fontSize: '18px', fontWeight: 700 }}>{p.name}</h3>
                     <span style={{ fontSize: '12px', color: p.color }}>{p.reach}</span>
@@ -652,7 +652,7 @@ const AppDevelopmentPage = () => {
                     <tr key={p.name} style={{ borderBottom: i < APP_PLATFORMS.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}>
                       <td style={{ padding: '20px 24px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <img src={p.logo} alt={p.name} width="28" height="28" style={{ objectFit: 'contain' }} />
+                          <img src={p.logo} alt={p.name} width="28" height="28" loading="lazy" style={{ objectFit: 'contain' }} />
                           <span style={{ fontWeight: 600 }}>{p.name}</span>
                         </div>
                       </td>
@@ -852,7 +852,7 @@ const BuildPipeline = () => (
 const DesignToStoreFlow = () => (
   <div className="app-flow">
     <div className="app-flow-badge">
-      <img src="https://cdn.simpleicons.org/figma/F24E1E" alt="Figma" style={{ width: 20, height: 20 }} />
+      <img src="https://cdn.simpleicons.org/figma/F24E1E" alt="Figma" loading="lazy" style={{ width: 20, height: 20 }} />
     </div>
     <div className="app-flow-trail"><span className="app-flow-pulse" /></div>
     <div className="app-flow-stores">

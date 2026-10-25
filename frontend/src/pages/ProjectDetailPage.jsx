@@ -387,7 +387,7 @@ const ProjectDetailPage = () => {
                         boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
                       }}>
                         {logo ? (
-                          <img src={logo} alt={t.name} className="img-color" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} onError={(e) => {
+                          <img src={logo} alt={t.name} className="img-color" loading="lazy" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} onError={(e) => {
                             e.target.style.display = 'none';
                             e.target.parentElement.innerHTML = '<div style="font-weight:800; color:#000; font-size:20px;">' + t.name.charAt(0).toUpperCase() + '</div>';
                           }} />
@@ -431,7 +431,7 @@ const ProjectDetailPage = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '24px' }}>
               {project.gallery.map((img, idx) => (
                 <div key={idx} className="glass-card" style={{ aspectRatio: '16/10', overflow: 'hidden', padding: 0, background: '#111' }}>
-                  <img src={img} alt={`Galerie ${idx + 1}`} className="img-color" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  <img src={img} alt={`Galerie ${idx + 1}`} className="img-color" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                 </div>
               ))}
             </div>
@@ -474,7 +474,7 @@ const ProjectDetailPage = () => {
 
               <div style={{ display: 'inline-flex', alignItems: 'center', gap: '16px', justifyContent: 'center' }}>
                 {project.testimonial_avatar && (
-                  <img src={project.testimonial_avatar} alt={project.testimonial_author} className="img-color" style={{
+                  <img src={project.testimonial_avatar} alt={project.testimonial_author} className="img-color" loading="lazy" style={{
                     width: '56px', height: '56px', borderRadius: '50%', objectFit: 'cover',
                     border: '2px solid var(--accent-primary)',
                   }} />
@@ -828,6 +828,7 @@ const RelatedCard = ({ project: p, index, CategoryIcon }) => {
           <img
             src={p.cover_image}
             alt={p.title}
+            loading="lazy"
             style={{
               width: '100%', height: '100%', objectFit: 'cover',
               transition: 'transform 0.5s ease',

@@ -276,7 +276,7 @@ const ChatbotDevelopmentPage = () => {
                     {item.logo.includes('cdn.jsdelivr.net/npm/simple-icons') ? (
                       <div aria-hidden style={{ width: 18, height: 18, flexShrink: 0, backgroundColor: item.color, WebkitMaskImage: `url(${item.logo})`, maskImage: `url(${item.logo})`, WebkitMaskSize: 'contain', maskSize: 'contain', WebkitMaskRepeat: 'no-repeat', maskRepeat: 'no-repeat', WebkitMaskPosition: 'center', maskPosition: 'center' }} />
                     ) : (
-                      <img src={item.logo} alt={item.label} style={{ width: 18, height: 18, objectFit: 'contain' }} />
+                      <img src={item.logo} alt={item.label} loading="lazy" style={{ width: 18, height: 18, objectFit: 'contain' }} />
                     )}
                     <span style={{ fontSize: '13px', fontWeight: 600, color: 'var(--text-secondary)' }}>{item.label}</span>
                   </div>
@@ -440,7 +440,7 @@ const ChatbotDevelopmentPage = () => {
                    onMouseLeave={(e) => { e.currentTarget.style.borderColor = 'var(--border-subtle)'; e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'none'; }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '14px', marginBottom: '16px' }}>
                   <div style={{ width: '44px', height: '44px', borderRadius: 'var(--radius-md)', background: `${uc.color}20`, border: `1px solid ${uc.color}50`, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <img src={uc.logo} alt={uc.name} width="24" height="24" style={{ objectFit: 'contain' }} />
+                    <img src={uc.logo} alt={uc.name} width="24" height="24" loading="lazy" style={{ objectFit: 'contain' }} />
                   </div>
                   <h3 style={{ fontSize: '18px', fontWeight: 700 }}>{uc.name}</h3>
                 </div>
@@ -465,7 +465,7 @@ const ChatbotDevelopmentPage = () => {
                     <tr key={uc.name} style={{ borderBottom: i < USE_CASES.length - 1 ? '1px solid var(--border-subtle)' : 'none' }}>
                       <td style={{ padding: '20px 24px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                          <img src={uc.logo} alt={uc.name} width="20" height="20" style={{ objectFit: 'contain' }} />
+                          <img src={uc.logo} alt={uc.name} width="20" height="20" loading="lazy" style={{ objectFit: 'contain' }} />
                           <span style={{ fontWeight: 600 }}>{uc.name}</span>
                         </div>
                       </td>
@@ -597,7 +597,7 @@ const ChannelBroadcast = () => (
     <div className="bot-broadcast-center"><Bot size={18} color="#000" /></div>
     {BOT_CHANNELS.map((c, i) => (
       <span key={c.n} className="bot-channel-badge" style={{ '--angle': `${c.angle}deg`, animationDelay: `${i * 0.5}s` }}>
-        <img src={c.logo} alt={c.n} />
+        <img src={c.logo} alt={c.n} loading="lazy" />
       </span>
     ))}
   </div>

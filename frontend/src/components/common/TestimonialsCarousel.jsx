@@ -67,7 +67,7 @@ const TestimonialsCarousel = ({ items = [], interval = 6000 }) => {
                 </p>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '14px' }}>
                   {t.avatar ? (
-                    <img src={t.avatar} alt={t.name} style={{
+                    <img src={t.avatar} alt={t.name} loading="lazy" style={{
                       width: '52px', height: '52px', borderRadius: '50%', objectFit: 'cover',
                       border: '2px solid rgba(255, 107, 0, 0.4)',
                     }} />

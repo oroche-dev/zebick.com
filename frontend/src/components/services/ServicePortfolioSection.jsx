@@ -167,6 +167,7 @@ const ServicePortfolioSection = ({
                     className="proj-img"
                     src={image}
                     alt={cardTitle}
+                    loading="lazy"
                     style={{
                       width: '100%', height: '100%',
                       objectFit: 'cover',

@@ -86,7 +86,7 @@ const TeamAdmin = () => {
             {items.map((m) => (
               <div key={m.id} style={{ background: 'linear-gradient(145deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01))', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-xl)', overflow: 'hidden' }}>
                 <div style={{ aspectRatio: '1/1', background: '#111' }}>
-                  {m.image && <img src={m.image} alt={m.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                  {m.image && <img src={m.image} alt={m.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
                 </div>
                 <div style={{ padding: '18px' }}>
                   <h3 style={{ fontSize: '16px', fontWeight: 700, margin: 0 }}>{m.name}</h3>

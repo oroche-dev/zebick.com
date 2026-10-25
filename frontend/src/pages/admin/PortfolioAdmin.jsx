@@ -375,7 +375,7 @@ const PortfolioAdmin = () => {
                   <div style={{ width: '52px', height: '52px', background: '#fff', borderRadius: '12px', overflow: 'hidden', flexShrink: 0, border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px' }}>
                     {(() => {
                       const src = t.logo || (t.name ? `https://cdn.simpleicons.org/${t.name.toLowerCase().replace(/[^a-z0-9]/g, '')}` : '');
-                      return src ? <img src={src} alt={t.name} style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} onError={(e) => { e.target.style.display = 'none'; }} /> : <ImageIcon size={20} color="#999" />;
+                      return src ? <img src={src} alt={t.name} loading="lazy" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} onError={(e) => { e.target.style.display = 'none'; }} /> : <ImageIcon size={20} color="#999" />;
                     })()}
                   </div>
                   <input style={input} placeholder="Tech-Name (z.B. React)" value={t.name} onChange={(e) => {
@@ -426,7 +426,7 @@ const PortfolioAdmin = () => {
               {form.gallery.map((img, idx) => (
                 <div key={idx} style={{ display: 'flex', gap: '12px', marginBottom: '10px', alignItems: 'center' }}>
                   <div style={{ width: '80px', height: '50px', background: '#111', borderRadius: '8px', overflow: 'hidden', flexShrink: 0, border: '1px solid var(--border-subtle)' }}>
-                    {img && <img src={img} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+                    {img && <img src={img} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
                   </div>
                   <input style={input} value={img} onChange={(e) => {
                     const copy = [...form.gallery]; copy[idx] = e.target.value; setForm({ ...form, gallery: copy });
@@ -567,7 +567,7 @@ const PortfolioAdmin = () => {
               }}>
                 <div style={{ position: 'relative', aspectRatio: '16/10', background: '#111' }}>
                   {p.cover_image ? (
-                    <img src={p.cover_image} alt={p.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <img src={p.cover_image} alt={p.title} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                   ) : (
                     <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>
                       <ImageIcon size={40} />
@@ -645,7 +645,7 @@ const Field = ({ label, hint, children }) => (
 const ImageInput = ({ value, onChange, onFile }) => (
   <>
     <div style={{ aspectRatio: '16/10', background: '#111', borderRadius: 'var(--radius-md)', marginBottom: '12px', overflow: 'hidden', border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      {value ? <img src={value} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={40} color="var(--text-muted)" />}
+      {value ? <img src={value} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={40} color="var(--text-muted)" />}
     </div>
     <input style={input} value={value || ''} onChange={(e) => onChange(e.target.value)} placeholder="Bild-URL eingeben…" />
     <div style={{ marginTop: '10px' }}>

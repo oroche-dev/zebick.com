@@ -89,6 +89,7 @@ const LogoTile = ({ name, src, Component, height = 32, white = false }) => {
           <img
             src={src}
             alt={name}
+            loading="lazy"
             onError={() => setErrored(true)}
             style={{ height: `${height}px`, maxWidth: '100%', objectFit: 'contain', filter: white ? 'brightness(0) invert(1)' : 'none' }}
           />
@@ -282,7 +283,7 @@ const TrustSection = () => {
                   'https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&q=80&auto=format&fit=crop',
                   'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&q=80&auto=format&fit=crop',
                 ].map((src, i) => (
-                  <img key={i} src={src} alt={`Team ${i+1}`} style={{
+                  <img key={i} src={src} alt={`Team ${i+1}`} loading="lazy" style={{
                     width: '32px', height: '32px', borderRadius: '50%', objectFit: 'cover',
                     border: '2px solid #0a0a0a',
                     marginLeft: i === 0 ? 0 : '-10px',
@@ -357,7 +358,7 @@ const TrustSection = () => {
                     onMouseLeave={e => { e.currentTarget.style.opacity = '0.6'; }}
                   >
                     {p.Component ? <p.Component size={p.height} /> : (
-                      <img src={p.src} alt={p.name} style={{ height: `${p.height}px`, maxWidth: '100%', objectFit: 'contain' }} />
+                      <img src={p.src} alt={p.name} loading="lazy" style={{ height: `${p.height}px`, maxWidth: '100%', objectFit: 'contain' }} />
                     )}
                   </div>
                 ))}
@@ -374,7 +375,7 @@ const TrustSection = () => {
                       height: '34px', flexShrink: 0, opacity: 0.6,
                     }}>
                       {p.Component ? <p.Component size={p.height} /> : (
-                        <img src={p.src} alt="" style={{ height: `${p.height}px`, maxWidth: 'none', objectFit: 'contain' }} />
+                        <img src={p.src} alt="" loading="lazy" style={{ height: `${p.height}px`, maxWidth: 'none', objectFit: 'contain' }} />
                       )}
                     </div>
                   ))}
@@ -1078,7 +1079,7 @@ const WhyUsSection = () => {
                 onMouseLeave={e => { e.currentTarget.style.opacity = '0.55'; }}
               >
                 {p.Component ? <p.Component size={p.height} /> : (
-                  <img src={p.src} alt={p.name} style={{ height: `${p.height}px`, maxWidth: '100%', objectFit: 'contain' }} />
+                  <img src={p.src} alt={p.name} loading="lazy" style={{ height: `${p.height}px`, maxWidth: '100%', objectFit: 'contain' }} />
                 )}
               </div>
             ))}
@@ -1097,7 +1098,7 @@ const WhyUsSection = () => {
                   height: '32px', flexShrink: 0, opacity: 0.6,
                 }}>
                   {p.Component ? <p.Component size={p.height} /> : (
-                    <img src={p.src} alt="" style={{ height: `${p.height}px`, maxWidth: 'none', objectFit: 'contain' }} />
+                    <img src={p.src} alt="" loading="lazy" style={{ height: `${p.height}px`, maxWidth: 'none', objectFit: 'contain' }} />
                   )}
                 </div>
               ))}
@@ -1921,7 +1922,7 @@ const TechStackSection = () => {
 
   const renderLogo = (tech, size = 26) => {
     if (tech.Component) return <tech.Component size={size} />;
-    return <img src={tech.src} alt={tech.name} style={{ width: `${size}px`, height: `${size}px`, objectFit: 'contain' }} />;
+    return <img src={tech.src} alt={tech.name} loading="lazy" style={{ width: `${size}px`, height: `${size}px`, objectFit: 'contain' }} />;
   };
 
   return (

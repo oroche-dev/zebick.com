@@ -98,7 +98,7 @@ export default function CategoriesAdmin() {
               border: `1px solid ${(c.color || '#FF6B00')}44`, display: 'grid', placeItems: 'center',
               overflow: 'hidden',
             }}>
-              {c.image ? <img src={c.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={20} color={c.color || '#FF6B00'} />}
+              {c.image ? <img src={c.image} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={20} color={c.color || '#FF6B00'} />}
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 700, fontSize: 15 }}>{c.name}</div>
@@ -135,7 +135,7 @@ export default function CategoriesAdmin() {
             </div>
             <Field label="Bild (optional)">
               <div style={{ aspectRatio: '16/9', borderRadius: 10, overflow: 'hidden', background: '#000', border: '1px solid rgba(255,255,255,0.08)', display: 'grid', placeItems: 'center', marginBottom: 8 }}>
-                {form.image ? <img src={form.image} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={36} color="#444" />}
+                {form.image ? <img src={form.image} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={36} color="#444" />}
               </div>
               <label style={{ ...btnSecondary, display: 'inline-flex', cursor: 'pointer' }}>
                 <Upload size={14} /> Datei hochladen

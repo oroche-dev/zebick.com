@@ -25,7 +25,7 @@ const TestimonialCard = ({ t }) => (
     </p>
     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginTop: '20px' }}>
       {t.avatar ? (
-        <img src={t.avatar} alt={t.name} style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(255,107,0,0.3)', flexShrink: 0 }} />
+        <img src={t.avatar} alt={t.name} loading="lazy" style={{ width: 40, height: 40, borderRadius: '50%', objectFit: 'cover', border: '2px solid rgba(255,107,0,0.3)', flexShrink: 0 }} />
       ) : (
         <div style={{ width: 40, height: 40, borderRadius: '50%', background: 'linear-gradient(135deg, var(--accent-primary), #cc5500)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: '#000', fontSize: '15px', flexShrink: 0 }}>
           {(t.name || '?').charAt(0)}

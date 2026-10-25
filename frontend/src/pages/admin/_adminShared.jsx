@@ -100,7 +100,7 @@ export const ImagePicker = ({ value, onChange }) => {
   return (
     <>
       <div style={{ aspectRatio: '16/10', background: '#111', borderRadius: 'var(--radius-md)', marginBottom: '10px', overflow: 'hidden', border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {value ? <img src={value} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={40} color="var(--text-muted)" />}
+        {value ? <img src={value} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <ImageIcon size={40} color="var(--text-muted)" />}
       </div>
       <input style={input} value={value || ''} onChange={(e) => onChange(e.target.value)} placeholder="Bild-URL…" />
       <label style={{ ...btnSecondary, display: 'inline-flex', cursor: 'pointer', marginTop: '10px' }}>

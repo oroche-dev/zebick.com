@@ -130,6 +130,7 @@ const ToolDock = ({ tools }) => {
               ) : t.logo ? (
                 <img
                   src={t.logo} alt={t.name}
+                  loading="lazy"
                   style={{ width: '54%', height: '54%', objectFit: 'contain', pointerEvents: 'none' }}
                 />
               ) : (

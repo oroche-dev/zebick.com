@@ -182,7 +182,7 @@ export const ModernBenefits = ({
               return (
                 <div key={i} ref={(el) => { cardRefs.current[i] = el; }} className="mb-sticky-card" data-testid={`benefit-stack-card-${i}`}
                   style={cardStyles[i]}>
-                  {bg && <div className="mb-row-bg"><img src={bg} alt="" /><div className="mb-row-bg-overlay" /></div>}
+                  {bg && <div className="mb-row-bg"><img src={bg} alt="" loading="lazy" /><div className="mb-row-bg-overlay" /></div>}
                   <div className="mb-index">{String(i + 1).padStart(2, '0')}</div>
                   <div className="mb-content">
                     <div className="mb-head">
@@ -211,7 +211,7 @@ export const ModernBenefits = ({
                 const bg = getIconBg(Icon);
                 return (
                   <div key={i} data-testid={`benefit-row-mobile-${i}`} className="mb-row">
-                    {bg && <div className="mb-row-bg"><img src={bg} alt="" /><div className="mb-row-bg-overlay" /></div>}
+                    {bg && <div className="mb-row-bg"><img src={bg} alt="" loading="lazy" /><div className="mb-row-bg-overlay" /></div>}
                     <div className="mb-index">{String(i + 1).padStart(2, '0')}</div>
                     <div className="mb-content">
                       <div className="mb-head">

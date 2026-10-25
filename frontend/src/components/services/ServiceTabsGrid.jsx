@@ -43,7 +43,7 @@ const ChannelCard = ({ service, delay = 0, featured = false }) => {
       <div style={{ position: 'relative', zIndex: 1, display: 'flex', flexDirection: 'column', height: '100%' }}>
         <div style={{ width: badgeSize, height: badgeSize, borderRadius: 'var(--radius-md)', background: `${accent}1a`, border: `1px solid ${accent}4d`, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '16px' }}>
           {service.logo && !logoFailed ? (
-            <img src={service.logo} alt={service.title} style={{ width: '58%', height: '58%', objectFit: 'contain' }} onError={() => setLogoFailed(true)} />
+            <img src={service.logo} alt={service.title} loading="lazy" style={{ width: '58%', height: '58%', objectFit: 'contain' }} onError={() => setLogoFailed(true)} />
           ) : (
             <Icon size={featured ? 28 : 24} color={accent} />
           )}
