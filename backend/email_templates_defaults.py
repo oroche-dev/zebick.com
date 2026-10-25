@@ -283,7 +283,7 @@ Vertraulichkeitshinweis: Diese E-Mail ist ausschlie&szlig;lich f&uuml;r den Empf
             "subject": "Wir haben deine Anfrage erhalten \u2013 {{COMPANY_NAME}}",
             "body_html": _wrap(
                 _header_html("Vielen Dank f\u00fcr deine Nachricht!", "\u2728")
-                + _greeting("Hallo {{name}},",
+                + _greeting("{{greeting_name}}",
                             "vielen Dank f\u00fcr deine Kontaktaufnahme und dein Interesse an unseren Dienstleistungen.<br><br>"
                             "Wir haben deine Anfrage erfolgreich erhalten. Unser Team wird deine Nachricht pr\u00fcfen und sich so bald wie m\u00f6glich bei dir melden.")
                 + _box(
@@ -306,8 +306,8 @@ Vertraulichkeitshinweis: Diese E-Mail ist ausschlie&szlig;lich f&uuml;r den Empf
                 + _para("Freundliche Gr\u00fc\u00dfe<br><strong style='color:#333'>Dein {{COMPANY_NAME}}-Team</strong>")
                 + _footer_html()
             ),
-            "body_text": "Hallo {{name}},\n\nvielen Dank f\u00fcr deine Kontaktaufnahme und dein Interesse an unseren Dienstleistungen.\n\nWir haben deine Anfrage erfolgreich erhalten. Unser Team wird deine Nachricht pr\u00fcfen und sich so bald wie m\u00f6glich bei dir melden.\n\nDeine Anfrage im \u00dcberblick:\nReferenznummer: {{reference_id}}\nBetreff: {{service}}\nEingangsdatum: {{received_at}}\n\nDu musst nichts weiter unternehmen. Wir melden uns bei dir \u00fcber die von dir angegebene E-Mail-Adresse.\n\nDeine Nachricht:\n\"{{message_preview}}\"\n\nFalls du weitere Informationen erg\u00e4nzen m\u00f6chtest, erreichst du uns unter {{CONTACT_EMAIL}}.\n\nFreundliche Gr\u00fc\u00dfe\nDein {{COMPANY_NAME}}-Team",
-            "available_vars": ["name", "email", "message_preview", "service", "company", "reference_id", "subject_row", "received_at", "year"],
+            "body_text": "{{greeting_name}}\n\nvielen Dank f\u00fcr deine Kontaktaufnahme und dein Interesse an unseren Dienstleistungen.\n\nWir haben deine Anfrage erfolgreich erhalten. Unser Team wird deine Nachricht pr\u00fcfen und sich so bald wie m\u00f6glich bei dir melden.\n\nDeine Anfrage im \u00dcberblick:\nReferenznummer: {{reference_id}}\nBetreff: {{service}}\nEingangsdatum: {{received_at}}\n\nDu musst nichts weiter unternehmen. Wir melden uns bei dir \u00fcber die von dir angegebene E-Mail-Adresse.\n\nDeine Nachricht:\n\"{{message_preview}}\"\n\nFalls du weitere Informationen erg\u00e4nzen m\u00f6chtest, erreichst du uns unter {{CONTACT_EMAIL}}.\n\nFreundliche Gr\u00fc\u00dfe\nDein {{COMPANY_NAME}}-Team",
+            "available_vars": ["name", "email", "greeting_name", "message_preview", "service", "company", "reference_id", "subject_row", "received_at", "year"],
         },
         {
             "key": "newsletter_confirm_doi",

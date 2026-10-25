@@ -282,10 +282,16 @@ async def submit_contact_form(request: Request, form_data: ContactFormSubmit):
             f"<td style='font-size:14px;color:#333;text-align:right;padding-top:6px'>{bleach.clean(contact.service)}</td></tr>"
         ) if contact.service else ""
         received_at = contact.submitted_at.strftime("%d.%m.%Y, %H:%M Uhr")
+        # Tool widgets (Kostenrechner, DSGVO-Check, ...) only collect an email,
+        # not a name, and fill this field with a placeholder like
+        # "Kostenrechner-Lead" so admins can spot the source in the contact
+        # list. That placeholder shouldn't greet the customer by name in their
+        # own confirmation email — use a neutral greeting instead.
+        greeting_name = f"Hallo {bleach.clean(contact.name)}," if not contact.name.endswith("-Lead") else "Hallo,"
         await send_template_email(
             "contact_confirmation",
             contact.email,
-            {"name": contact.name, "email": contact.email,
+            {"name": contact.name, "email": contact.email, "greeting_name": greeting_name,
              "message_preview": preview, "service": contact.service or "",
              "company": contact.company or "",
              "reference_id": contact.id, "subject_row": subject_row, "received_at": received_at},
