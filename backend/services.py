@@ -135,6 +135,38 @@ def _build_message(
     return msg
 
 
+async def _gmail_access_token() -> str:
+    async with httpx.AsyncClient(timeout=20) as client:
+        resp = await client.post(
+            "https://oauth2.googleapis.com/token",
+            data={
+                "client_id": config.GMAIL_CLIENT_ID,
+                "client_secret": config.GMAIL_CLIENT_SECRET,
+                "refresh_token": config.GMAIL_REFRESH_TOKEN,
+                "grant_type": "refresh_token",
+            },
+        )
+    resp.raise_for_status()
+    return resp.json()["access_token"]
+
+
+async def _send_via_gmail_api(
+    to_email: str, subject: str, html_content: str, text_content: Optional[str],
+    attachments: Optional[List[Tuple[str, bytes, str]]],
+) -> bool:
+    access_token = await _gmail_access_token()
+    message = _build_message(to_email, subject, html_content, text_content, attachments)
+    raw = base64.urlsafe_b64encode(message.as_bytes()).decode()
+    async with httpx.AsyncClient(timeout=20) as client:
+        resp = await client.post(
+            "https://gmail.googleapis.com/gmail/v1/users/me/messages/send",
+            headers={"Authorization": f"Bearer {access_token}"},
+            json={"raw": raw},
+        )
+    resp.raise_for_status()
+    return True
+
+
 async def _send_via_resend(
     to_email: str, subject: str, html_content: str, text_content: Optional[str],
     attachments: Optional[List[Tuple[str, bytes, str]]],
@@ -166,6 +198,12 @@ async def send_email(
     to_email: str, subject: str, html_content: str, text_content: str = None,
     attachments: Optional[List[Tuple[str, bytes, str]]] = None,
 ) -> bool:
+    if config.GMAIL_CLIENT_ID and config.GMAIL_CLIENT_SECRET and config.GMAIL_REFRESH_TOKEN:
+        try:
+            return await _send_via_gmail_api(to_email, subject, html_content, text_content, attachments)
+        except Exception as e:  # noqa: BLE001
+            logger.error(f"Gmail API send failed {to_email}: {e}")
+            return False
     if config.RESEND_API_KEY:
         try:
             return await _send_via_resend(to_email, subject, html_content, text_content, attachments)

@@ -53,8 +53,15 @@ CORS_ORIGINS = [
 
 # --- Third-party (optional) ---
 LLM_API_KEY = os.environ.get("LLM_API_KEY")
-# Preferred email transport: sends over HTTPS, so it works on hosts (e.g.
-# Render) that block outbound SMTP ports. Falls back to SMTP below when unset.
+# Email transport, checked in this order — all three send over HTTPS, so
+# they work on hosts (e.g. Render) that block outbound SMTP ports. Falls
+# back to raw SMTP below when none of these are set.
+# 1) Gmail API (keeps sending as your existing Google/Workspace address —
+#    see docs/email-gmail-api-setup.md for how to get these three values).
+GMAIL_CLIENT_ID = os.environ.get("GMAIL_CLIENT_ID")
+GMAIL_CLIENT_SECRET = os.environ.get("GMAIL_CLIENT_SECRET")
+GMAIL_REFRESH_TOKEN = os.environ.get("GMAIL_REFRESH_TOKEN")
+# 2) Resend (see docs/email-resend-setup.md).
 RESEND_API_KEY = os.environ.get("RESEND_API_KEY")
 SMTP_HOST = os.environ.get("SMTP_HOST")
 SMTP_PORT = int(os.environ.get("SMTP_PORT", "465"))
