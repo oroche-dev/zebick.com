@@ -14,7 +14,7 @@ def _header_html(title, emoji=""):
     return f"""<tr><td style="padding:0">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#0a0a0a;padding:0;text-align:center">
 <tr><td style="padding:52px 30px 40px;text-align:center;background:#0a0a0a">
-<img src="{LOGO_URL}" alt="Zebick" height="52" class="zb-logo" style="display:inline-block;height:52px;width:auto;filter:brightness(0) invert(1);margin-bottom:26px" />
+<img src="{LOGO_URL}" alt="Zebick" width="177" height="52" class="zb-logo" style="display:inline-block;height:52px;width:177px;filter:brightness(0) invert(1);margin-bottom:26px" />
 <div style="width:56px;height:3px;background:#FF6B00;margin:0 auto 24px;border-radius:2px;box-shadow:0 0 12px rgba(255,107,0,0.4)"></div>
 <h1 style="color:#fff;font-family:Georgia,'Times New Roman',serif;font-size:28px;font-weight:600;margin:0 0 12px;line-height:1.3;letter-spacing:-0.3px">{title}</h1>
 <p style="color:#FF8A33;font-family:'Helvetica Neue',Arial,sans-serif;font-size:11px;margin:0;letter-spacing:3px;text-transform:uppercase;font-weight:600">Digitalagentur &middot; Cyber Security</p>
@@ -33,7 +33,7 @@ def _footer_html():
     return f"""<tr><td style="background:#0a0a0a;padding:36px 30px 28px;text-align:center;border-top:1px solid rgba(255,107,0,0.2)">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
 <tr><td style="text-align:center;padding-bottom:18px">
-<img src="{LOGO_URL}" alt="Zebick" height="32" class="zb-logo" style="display:inline-block;height:32px;width:auto;filter:brightness(0) invert(1);opacity:0.95" />
+<img src="{LOGO_URL}" alt="Zebick" width="109" height="32" class="zb-logo" style="display:inline-block;height:32px;width:109px;filter:brightness(0) invert(1);opacity:0.95" />
 </td></tr>
 <tr><td style="text-align:center;padding-bottom:14px">
 <div style="width:36px;height:2px;background:#FF6B00;margin:0 auto 14px;border-radius:1px;box-shadow:0 0 8px rgba(255,107,0,0.5)"></div>
@@ -157,7 +157,7 @@ def build_templates():
             "subject": "",
             "body_html": f"""<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;margin-top:24px;border-top:2px solid #FF6B00;padding-top:18px;font-family:Arial,sans-serif">
 <tr><td style="padding:4px 0">
-<img src="{LOGO_URL}" alt="Zebick" height="34" style="display:block;height:34px;width:auto;margin-bottom:8px" />
+<img src="{LOGO_URL}" alt="Zebick" width="116" height="34" style="display:block;height:34px;width:116px;margin-bottom:8px" />
 <div style="color:#FF6B00;font-size:16px;font-weight:700;margin-bottom:4px">Zebick</div>
 <div style="color:#666;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px">Digitalagentur &middot; Cyber Security</div>
 <div style="color:#333;font-size:13px;line-height:1.6">
