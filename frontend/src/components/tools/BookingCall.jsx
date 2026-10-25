@@ -17,6 +17,7 @@ const BookingCall = () => {
       payload: form,
       email: form.email,
       name: form.name,
+      phone: form.phone,
       message: `Wunschthema: ${form.topic}\nZeitfenster: ${form.preferred}\nTelefon: ${form.phone}`,
       onSuccess: () => setSent(true),
     });

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Globe, Mail, Zap, Send } from 'lucide-react';
+import { Globe, Mail, Phone, Zap, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { baseCard, inputStyle, labelStyle, submitLead } from './toolStyles';
 
 const UrlAuditTool = ({ tool, intro, checks }) => {
   const [url, setUrl] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -76,6 +77,10 @@ const UrlAuditTool = ({ tool, intro, checks }) => {
             })}
           </div>
 
+          <div style={{ marginBottom: '12px', maxWidth: '280px' }}>
+            <label style={labelStyle}><Phone size={14} /> Telefon (optional)</label>
+            <input type="tel" placeholder="+49 …" value={phone} onChange={(e) => setPhone(e.target.value)} data-testid={`${tool}-phone`} style={inputStyle} />
+          </div>
           <button
             onClick={() => {
               // The email input lives in the URL/Analysieren row above, not in a
@@ -89,6 +94,7 @@ const UrlAuditTool = ({ tool, intro, checks }) => {
                 tool,
                 payload: { url, overall, results },
                 email,
+                phone,
                 name: 'Audit-Lead',
                 message: `Bitte senden Sie mir den detaillierten Bericht zu ${url}.`,
               });

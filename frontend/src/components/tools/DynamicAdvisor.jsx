@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import * as Icons from 'lucide-react';
-import { Mail, Send, Sparkles, ArrowLeft, CheckCircle2 } from 'lucide-react';
+import { Mail, Phone, Send, Sparkles, ArrowLeft, CheckCircle2 } from 'lucide-react';
 import { baseCard, inputStyle, labelStyle, submitLead } from './toolStyles';
 
 /**
@@ -16,6 +16,7 @@ const DynamicAdvisor = ({ config, compact = false }) => {
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState({});
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [sent, setSent] = useState(false);
 
   const questions = Array.isArray(config?.questions) ? config.questions : [];
@@ -169,6 +170,7 @@ const DynamicAdvisor = ({ config, compact = false }) => {
                   tool: config?.title || 'Berater',
                   payload: answers,
                   email,
+                  phone,
                   name: `${config?.title || 'Berater'}-Lead`,
                   message: `Empfehlung: ${recommendation}`,
                   onSuccess: () => setSent(true),
@@ -183,6 +185,15 @@ const DynamicAdvisor = ({ config, compact = false }) => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 data-testid="advisor-email"
+                style={{ ...inputStyle, marginBottom: 12 }}
+              />
+              <label style={labelStyle}><Phone size={14} /> Telefon (optional)</label>
+              <input
+                type="tel"
+                placeholder="+49 …"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                data-testid="advisor-phone"
                 style={{ ...inputStyle, marginBottom: 12 }}
               />
               <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>

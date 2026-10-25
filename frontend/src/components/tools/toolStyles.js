@@ -32,13 +32,14 @@ export const labelStyle = {
 };
 
 // Submit-Hilfsfunktion (Lead → Backend) mit verbessertem Error-Handling
-export const submitLead = async ({ tool, payload, email, name, message, onSuccess }) => {
+export const submitLead = async ({ tool, payload, email, name, phone, budget, message, onSuccess }) => {
   try {
     await axios.post(`${API}/contact/submit`, {
       name: name || 'Tool-Lead',
       email,
-      phone: '',
+      phone: phone || '',
       service: tool,
+      budget: budget || undefined,
       message: `[${tool}]\n${message}\n\nResultat:\n${JSON.stringify(payload, null, 2)}`,
     });
     toast.success('Ergebnis gesendet! Wir melden uns innerhalb von 24 h.');

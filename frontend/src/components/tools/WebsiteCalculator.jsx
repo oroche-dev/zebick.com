@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import {
-  Mail, Send, CheckCircle, Layout, Building2, ShoppingCart, Cpu, Layers,
+  Mail, Phone, Send, CheckCircle, Layout, Building2, ShoppingCart, Cpu, Layers,
   FileText, Store, Globe2, Plug, Sparkles, Palette, Calculator
 } from 'lucide-react';
 import { baseCard, inputStyle, labelStyle, submitLead } from './toolStyles';
@@ -37,6 +37,7 @@ const WebsiteCalculator = ({ basePrices, featurePrices }) => {
     cms: true, shop: false, multilang: false, integrations: false, ai: false, design: false,
   });
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [sent, setSent] = useState(false);
 
   const estimate = useMemo(() => {
@@ -210,6 +211,8 @@ const WebsiteCalculator = ({ basePrices, featurePrices }) => {
               tool: 'Website-Kostenrechner',
               payload: { pages, type, features, estimate },
               email,
+              phone,
+              budget: String(Math.round((estimate.low + estimate.high) / 2)),
               name: 'Kostenrechner-Lead',
               message: 'Ich möchte ein verbindliches Angebot.',
               onSuccess: () => setSent(true),
@@ -224,6 +227,14 @@ const WebsiteCalculator = ({ basePrices, featurePrices }) => {
             required type="email" placeholder="ihre@firma.de" value={email}
             onChange={(e) => setEmail(e.target.value)}
             data-testid="calc-email" style={inputStyle}
+          />
+          <label style={{ ...labelStyle, marginTop: '14px', marginBottom: '8px' }}>
+            <Phone size={14} /> Telefon (optional)
+          </label>
+          <input
+            type="tel" placeholder="+49 …" value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            data-testid="calc-phone" style={inputStyle}
           />
           <button
             type="submit"
