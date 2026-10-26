@@ -21,7 +21,6 @@ import HomePage from './pages/HomePage';
 const AboutPage = lazy(() => import('./pages/AboutPage'));
 const ServicesPage = lazy(() => import('./pages/ServicesPage'));
 const PortfolioPage = lazy(() => import('./pages/PortfolioPage'));
-const ProjectDetailPage = lazy(() => import('./pages/ProjectDetailPage'));
 const ContactPage = lazy(() => import('./pages/ContactPage'));
 const LogoPreviewPage = lazy(() => import('./pages/LogoPreviewPage'));
 const ReviewPage = lazy(() => import('./pages/ReviewPage'));
@@ -115,7 +114,7 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/services" element={<ServicesPage />} />
           <Route path="/portfolio" element={<PortfolioPage />} />
-          <Route path="/portfolio/:slug" element={<ProjectDetailPage />} />
+          <Route path="/portfolio/:slug" element={<PortfolioPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/kontakt" element={<ContactPage />} />
           <Route path="/logo-varianten" element={<LogoPreviewPage />} />

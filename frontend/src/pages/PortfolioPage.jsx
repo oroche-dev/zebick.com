@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import {
   ArrowRight, Trophy, Users, Calendar, TrendingUp, Sparkles,
   ChevronRight, Code, Smartphone, Shield, Palette, Gamepad2, Bot, Server, PenTool,
@@ -8,6 +8,7 @@ import Header from '../components/layout/Header';
 import Seo, { SITE_URL } from '../components/common/Seo';
 import Footer from '../components/layout/Footer';
 import Chatbot from '../components/chatbot/Chatbot';
+import ProjectDetailModal from '../components/portfolio/ProjectDetailModal';
 import { portfolioProjects as fallbackProjects } from '../data/mock';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -28,6 +29,8 @@ const categoryIcons = {
 };
 
 const PortfolioPage = () => {
+  const { slug } = useParams();
+  const navigate = useNavigate();
   const [activeFilter, setActiveFilter] = useState('Alle');
   const [hoveredProject, setHoveredProject] = useState(null);
   const [projects, setProjects] = useState([]);
@@ -496,6 +499,14 @@ const PortfolioPage = () => {
 
       <Footer />
       <Chatbot />
+
+      {slug && (
+        <ProjectDetailModal
+          slug={slug}
+          onClose={() => navigate('/portfolio')}
+          onNavigate={(newSlug) => navigate(`/portfolio/${newSlug}`)}
+        />
+      )}
     </div>
   );
 };
