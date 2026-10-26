@@ -80,3 +80,8 @@ SUPPORT_NOTIFICATION_EMAIL = os.environ.get("SUPPORT_NOTIFICATION_EMAIL") or ADM
 
 GA_PROPERTY_ID = os.environ.get("GA_PROPERTY_ID", "")
 GA_CREDENTIALS_PATH = ROOT_DIR / "ga_credentials.json"
+
+# PageSpeed Insights (real-audit tool). Required — Google's keyless tier has
+# a hard 0 requests/day quota, get a free key at console.cloud.google.com
+# (enable "PageSpeed Insights API", create an API key, no billing needed).
+PAGESPEED_API_KEY = os.environ.get("PAGESPEED_API_KEY", "")

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Globe, Mail, Phone, User, Zap, Send } from 'lucide-react';
 import { toast } from 'sonner';
 import { baseCard, inputStyle, labelStyle, submitLead } from './toolStyles';
+
+const API = `${process.env.REACT_APP_BACKEND_URL}/api`;
 
 const UrlAuditTool = ({ tool, intro, checks }) => {
   const [url, setUrl] = useState('');
@@ -12,21 +15,22 @@ const UrlAuditTool = ({ tool, intro, checks }) => {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const analyze = () => {
+  const analyze = async () => {
     if (!url) { toast.error('Bitte URL eingeben'); return; }
     if (!checks || checks.length === 0) { toast.error('Für dieses Tool sind noch keine Prüfpunkte konfiguriert.'); return; }
     setLoading(true);
-    // Pseudo-Analyse (deterministische Heuristik aus der URL) – das echte Audit erfolgt durch unser Team
-    setTimeout(() => {
-      const seed = url.length + url.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
-      const score = (i) => 45 + ((seed * (i + 1)) % 50);
-      setResults(checks.map((c, i) => ({ ...c, score: score(i) })));
-      setLoading(false);
-    }, 800);
+    try {
+      const r = await axios.post(`${API}/tools/audit`, { url, checks: checks.map((c) => c.name) });
+      setResults(r.data.results);
+    } catch (e) {
+      const detail = e?.response?.data?.detail;
+      toast.error(typeof detail === 'string' && detail.trim() ? detail : 'Analyse fehlgeschlagen. Bitte URL prüfen und erneut versuchen.');
+    }
+    setLoading(false);
   };
 
-  const overall = results && results.length
-    ? Math.round(results.reduce((a, r) => a + r.score, 0) / results.length) : 0;
+  const scored = results ? results.filter((r) => r.score !== null && r.score !== undefined) : [];
+  const overall = scored.length ? Math.round(scored.reduce((a, r) => a + r.score, 0) / scored.length) : 0;
 
   return (
     <div data-testid={`tool-${tool}`} style={{ ...baseCard, padding: '32px' }}>
@@ -41,7 +45,7 @@ const UrlAuditTool = ({ tool, intro, checks }) => {
           <input type="email" placeholder="ihre@firma.de" value={email} onChange={(e) => setEmail(e.target.value)} data-testid={`${tool}-email`} style={inputStyle} />
         </div>
         <button onClick={analyze} disabled={loading} data-testid={`${tool}-analyze`} className="btn-primary" style={{ padding: '14px 20px', whiteSpace: 'nowrap' }}>
-          {loading ? 'Analysiere…' : <>Analysieren <Zap size={16} /></>}
+          {loading ? 'Analysiere… (bis zu 30 Sek.)' : <>Analysieren <Zap size={16} /></>}
         </button>
       </div>
 
@@ -64,15 +68,16 @@ const UrlAuditTool = ({ tool, intro, checks }) => {
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px', marginBottom: '20px' }}>
             {results.map((r, i) => {
-              const color = r.score >= 80 ? '#10B981' : r.score >= 60 ? 'var(--accent-primary)' : '#EF4444';
+              const hasScore = r.score !== null && r.score !== undefined;
+              const color = !hasScore ? 'var(--text-muted)' : r.score >= 80 ? '#10B981' : r.score >= 60 ? 'var(--accent-primary)' : '#EF4444';
               return (
                 <div key={i} style={{ padding: '16px', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-md)' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                     <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>{r.name}</span>
-                    <span style={{ fontSize: '15px', fontWeight: 800, color }}>{r.score}</span>
+                    <span style={{ fontSize: hasScore ? '15px' : '11px', fontWeight: hasScore ? 800 : 600, color }}>{hasScore ? r.score : 'Nicht verfügbar'}</span>
                   </div>
                   <div style={{ height: '4px', background: 'rgba(255,255,255,0.05)', borderRadius: '999px', overflow: 'hidden' }}>
-                    <div style={{ width: `${r.score}%`, height: '100%', background: color }} />
+                    <div style={{ width: `${hasScore ? r.score : 0}%`, height: '100%', background: color }} />
                   </div>
                 </div>
               );

@@ -45,20 +45,28 @@ from __future__ import annotations
 import copy
 import logging
 import uuid
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from typing import Any, Dict, List, Optional
+from urllib.parse import urlparse
 
-from fastapi import APIRouter, Depends, HTTPException
+import httpx
+from fastapi import APIRouter, Depends, HTTPException, Request
 from pydantic import BaseModel, Field, field_validator
+from slowapi import Limiter
+from slowapi.util import get_remote_address
 
+import config
 from security import db, get_current_user, sanitize_text
 
 logger = logging.getLogger("zebick.tools")
 router = APIRouter(prefix="/api")
+limiter = Limiter(key_func=get_remote_address, enabled=config.RATE_LIMIT_ENABLED)
 
 COL = db.tools_config
 VERSIONS = db.tool_versions
+AUDIT_CACHE = db.audit_cache
 MAX_VERSIONS = 25
+AUDIT_CACHE_HOURS = 24
 
 
 async def _snapshot_version(existing: dict, admin_email: str, note: str = "") -> None:
@@ -186,6 +194,147 @@ async def get_public_tool(slug: str):
     if not doc:
         raise HTTPException(status_code=404, detail="Tool nicht gefunden")
     return _clean(doc)
+
+
+# -------------------------- AUDIT (real PageSpeed Insights check) --------------------------
+
+class AuditRequest(BaseModel):
+    url: str = Field(..., max_length=500)
+    checks: List[str] = Field(default=[], max_length=30)
+
+
+# Exact check-label -> metric-key mapping for the two seeded audit tools
+# (website-check, seo-audit). Unknown future labels fall back to "performance".
+# "Backlink-Profil" has no PageSpeed-measurable equivalent — mapped to None on
+# purpose rather than a fabricated/fallback score (see memory: never invent
+# performance numbers).
+CHECK_METRIC_MAP: Dict[str, Optional[str]] = {
+    "Ladezeit": "performance",
+    "Page Speed": "performance",
+    "Mobile UX": "mobile",
+    "Mobile Indexing": "mobile",
+    "Barrierefreiheit": "accessibility",
+    "SEO-Basics": "seo",
+    "Technical-SEO": "seo",
+    "On-Page SEO": "seo",
+    "Meta-Tags": "seo",
+    "Content-Qualität": "seo",
+    "Structured Data": "seo",
+    "Indexierung": "seo",
+    "Sicherheit (HTTPS)": "security",
+    "Bild-Optimierung": "images",
+    "Core Web Vitals": "core_web_vitals",
+    "Backlink-Profil": None,
+}
+
+
+def _is_safe_public_url(url: str) -> bool:
+    try:
+        p = urlparse(url)
+    except ValueError:
+        return False
+    if p.scheme not in ("http", "https") or not p.hostname:
+        return False
+    host = p.hostname.lower()
+    if host in ("localhost", "127.0.0.1", "0.0.0.0", "::1"):
+        return False
+    if host.startswith("192.168.") or host.startswith("10.") or host.startswith("169.254."):
+        return False
+    if host.startswith("172."):
+        try:
+            second = int(host.split(".")[1])
+            if 16 <= second <= 31:
+                return False
+        except (IndexError, ValueError):
+            pass
+    return True
+
+
+def _audit_score(v: Any) -> Optional[int]:
+    """A Lighthouse score is 0.0-1.0 (or null if the audit didn't apply)."""
+    if not isinstance(v, (int, float)):
+        return None
+    return round(v * 100)
+
+
+def _extract_metrics(psi: Dict[str, Any]) -> Dict[str, Optional[int]]:
+    categories = (psi.get("lighthouseResult") or {}).get("categories") or {}
+    audits = (psi.get("lighthouseResult") or {}).get("audits") or {}
+
+    def cat(name: str) -> Optional[int]:
+        return _audit_score((categories.get(name) or {}).get("score"))
+
+    def avg(*audit_ids: str) -> Optional[int]:
+        scores = [_audit_score(audits[a]["score"]) for a in audit_ids if a in audits and audits[a].get("score") is not None]
+        return round(sum(scores) / len(scores)) if scores else None
+
+    performance = cat("performance")
+    accessibility = cat("accessibility")
+    mobile_parts = [s for s in (performance, accessibility) if s is not None]
+
+    return {
+        "performance": performance,
+        "accessibility": accessibility,
+        "seo": cat("seo"),
+        "mobile": round(sum(mobile_parts) / len(mobile_parts)) if mobile_parts else None,
+        "security": _audit_score((audits.get("is-on-https") or {}).get("score")),
+        # "uses-optimized-images"/"modern-image-formats"/"uses-responsive-images" were
+        # the pre-2025 Lighthouse audit ids; newer Lighthouse versions consolidate all
+        # of that into this single "Insights"-style audit (verified against a live
+        # response — the old ids no longer appear in the API output at all).
+        "images": avg("image-delivery-insight"),
+        "core_web_vitals": avg("largest-contentful-paint", "cumulative-layout-shift", "total-blocking-time"),
+    }
+
+
+async def _run_pagespeed(url: str) -> Dict[str, Optional[int]]:
+    params = [
+        ("url", url), ("strategy", "mobile"),
+        ("category", "performance"), ("category", "accessibility"), ("category", "seo"),
+        ("category", "best-practices"),
+    ]
+    if config.PAGESPEED_API_KEY:
+        params.append(("key", config.PAGESPEED_API_KEY))
+    async with httpx.AsyncClient(timeout=55) as client:
+        resp = await client.get(
+            "https://www.googleapis.com/pagespeedonline/v5/runPagespeed",
+            params=params,
+        )
+    if resp.status_code != 200:
+        logger.error(f"PageSpeed Insights error {resp.status_code}: {resp.text[:300]}")
+        raise HTTPException(status_code=502, detail="Analyse fehlgeschlagen. Bitte später erneut versuchen.")
+    return _extract_metrics(resp.json())
+
+
+@router.post("/tools/audit")
+@limiter.limit("3/minute")
+async def run_audit(request: Request, payload: AuditRequest):
+    url = payload.url.strip()
+    if not _is_safe_public_url(url):
+        raise HTTPException(status_code=400, detail="Bitte eine gültige, öffentliche http(s)-URL eingeben.")
+
+    cache_key = url.lower().rstrip("/")
+    cached = await AUDIT_CACHE.find_one({"url": cache_key})
+    is_cached = False
+    if cached:
+        checked_at = datetime.fromisoformat(cached["checked_at"])
+        if datetime.now(timezone.utc) - checked_at < timedelta(hours=AUDIT_CACHE_HOURS):
+            metrics = cached["metrics"]
+            is_cached = True
+    if not is_cached:
+        metrics = await _run_pagespeed(url)
+        await AUDIT_CACHE.update_one(
+            {"url": cache_key},
+            {"$set": {"url": cache_key, "metrics": metrics, "checked_at": datetime.now(timezone.utc).isoformat()}},
+            upsert=True,
+        )
+
+    results = []
+    for name in payload.checks:
+        metric_key = CHECK_METRIC_MAP.get(name, "performance")
+        score = metrics.get(metric_key) if metric_key else None
+        results.append({"name": name, "score": score})
+    return {"results": results, "cached": is_cached}
 
 
 # -------------------------- ADMIN --------------------------
