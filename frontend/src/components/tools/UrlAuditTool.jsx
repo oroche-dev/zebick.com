@@ -18,10 +18,14 @@ const UrlAuditTool = ({ tool, intro, checks }) => {
   const analyze = async () => {
     if (!url) { toast.error('Bitte URL eingeben'); return; }
     if (!checks || checks.length === 0) { toast.error('Für dieses Tool sind noch keine Prüfpunkte konfiguriert.'); return; }
+    // Visitors naturally type a bare domain ("zebick.com") without a scheme —
+    // default to https:// rather than making them retype it after an error.
+    const fullUrl = /^https?:\/\//i.test(url) ? url : `https://${url}`;
     setLoading(true);
     try {
-      const r = await axios.post(`${API}/tools/audit`, { url, checks: checks.map((c) => c.name) });
+      const r = await axios.post(`${API}/tools/audit`, { url: fullUrl, checks: checks.map((c) => c.name) });
       setResults(r.data.results);
+      setUrl(fullUrl);
     } catch (e) {
       const detail = e?.response?.data?.detail;
       toast.error(typeof detail === 'string' && detail.trim() ? detail : 'Analyse fehlgeschlagen. Bitte URL prüfen und erneut versuchen.');
