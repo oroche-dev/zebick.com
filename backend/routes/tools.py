@@ -47,7 +47,7 @@ import logging
 import uuid
 from datetime import datetime, timezone, timedelta
 from typing import Any, Dict, List, Optional
-from urllib.parse import urlparse
+from urllib.parse import urlparse, urlunparse
 
 import httpx
 from fastapi import APIRouter, Depends, HTTPException, Request
@@ -65,8 +65,14 @@ limiter = Limiter(key_func=get_remote_address, enabled=config.RATE_LIMIT_ENABLED
 COL = db.tools_config
 VERSIONS = db.tool_versions
 AUDIT_CACHE = db.audit_cache
+AUDIT_QUOTA = db.audit_quota
 MAX_VERSIONS = 25
 AUDIT_CACHE_HOURS = 24
+# Per-IP rate limiting (3/minute, below) doesn't stop a distributed caller from
+# draining the whole PAGESPEED_API_KEY's shared daily quota. This is a global,
+# cross-IP ceiling on actual (non-cached) PageSpeed calls per day — well under
+# any real free-tier quota, just a safety backstop against abuse/runaway cost.
+AUDIT_DAILY_LIMIT = 200
 
 
 async def _snapshot_version(existing: dict, admin_email: str, note: str = "") -> None:
@@ -250,6 +256,17 @@ def _is_safe_public_url(url: str) -> bool:
     return True
 
 
+def _normalize_url(url: str) -> str:
+    """Scheme+host lowercased (DNS is case-insensitive); path case is left as-is
+    (many servers are case-sensitive there, lowercasing could merge two distinct
+    pages into one cache entry); query/fragment dropped entirely — they're never
+    needed for a whole-page/whole-site audit and keeping them out means the cache
+    key and the URL actually sent to PageSpeed are always identical."""
+    p = urlparse(url)
+    path = p.path.rstrip("/") or "/"
+    return urlunparse((p.scheme.lower(), p.netloc.lower(), path, "", "", ""))
+
+
 def _audit_score(v: Any) -> Optional[int]:
     """A Lighthouse score is 0.0-1.0 (or null if the audit didn't apply)."""
     if not isinstance(v, (int, float)):
@@ -306,14 +323,25 @@ async def _run_pagespeed(url: str) -> Dict[str, Optional[int]]:
     return _extract_metrics(resp.json())
 
 
+async def _bump_daily_quota() -> bool:
+    """Atomically increments today's PageSpeed-call counter; returns False if
+    that pushed it over AUDIT_DAILY_LIMIT (caller must not call PageSpeed then)."""
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    doc = await AUDIT_QUOTA.find_one_and_update(
+        {"_id": today}, {"$inc": {"count": 1}}, upsert=True, return_document=True,
+    )
+    return doc["count"] <= AUDIT_DAILY_LIMIT
+
+
 @router.post("/tools/audit")
 @limiter.limit("3/minute")
 async def run_audit(request: Request, payload: AuditRequest):
     url = payload.url.strip()
     if not _is_safe_public_url(url):
         raise HTTPException(status_code=400, detail="Bitte eine gültige, öffentliche http(s)-URL eingeben.")
+    url = _normalize_url(url)
 
-    cache_key = url.lower().rstrip("/")
+    cache_key = url
     cached = await AUDIT_CACHE.find_one({"url": cache_key})
     is_cached = False
     if cached:
@@ -322,6 +350,8 @@ async def run_audit(request: Request, payload: AuditRequest):
             metrics = cached["metrics"]
             is_cached = True
     if not is_cached:
+        if not await _bump_daily_quota():
+            raise HTTPException(status_code=503, detail="Tageslimit für Website-Analysen erreicht. Bitte morgen erneut versuchen.")
         metrics = await _run_pagespeed(url)
         await AUDIT_CACHE.update_one(
             {"url": cache_key},
