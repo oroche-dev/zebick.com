@@ -396,25 +396,12 @@ const ProjectDetailModal = ({ slug, onClose, onNavigate }) => {
                   </div>
 
                   {project.tech_stack_detailed && project.tech_stack_detailed.length > 0 && (
-                    <div className="stagger-children pdp-tech-grid" style={{
-                      display: 'grid',
-                      gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-                      gap: '16px', maxWidth: '1100px', margin: '0 auto',
-                    }}>
+                    <div className="stagger-children pdp-tech-grid" style={{ maxWidth: '1100px', margin: '0 auto' }}>
                       {project.tech_stack_detailed.map((t, idx) => {
                         const logo = techLogoUrl(t);
                         return (
-                          <div key={idx} className="glass-card" style={{
-                            padding: '28px 20px', textAlign: 'center',
-                            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '14px',
-                          }}>
-                            <div style={{
-                              width: '64px', height: '64px',
-                              background: '#fff', borderRadius: '14px',
-                              display: 'flex', alignItems: 'center', justifyContent: 'center',
-                              padding: '12px',
-                              boxShadow: '0 8px 20px rgba(0, 0, 0, 0.3)',
-                            }}>
+                          <div key={idx} className="glass-card pdp-tech-card">
+                            <div className="pdp-tech-logo">
                               {logo ? (
                                 <img src={logo} alt={t.name} className="img-color" loading="lazy" style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} onError={(e) => {
                                   e.target.style.display = 'none';
@@ -427,7 +414,7 @@ const ProjectDetailModal = ({ slug, onClose, onNavigate }) => {
                                 <div style={{ fontWeight: 800, color: '#000', fontSize: 20 }}>{t.name?.charAt(0).toUpperCase()}</div>
                               )}
                             </div>
-                            <div style={{ fontSize: '14px', fontWeight: 600, color: 'var(--text-primary)' }}>
+                            <div className="pdp-tech-name" style={{ fontWeight: 600, color: 'var(--text-primary)' }}>
                               {t.name}
                             </div>
                           </div>
@@ -620,14 +607,36 @@ const ProjectDetailModal = ({ slug, onClose, onNavigate }) => {
 
         {/* ============ MOBILE / RESPONSIVE STYLES ============ */}
         <style>{`
+          .pdp-tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 16px;
+          }
+          .pdp-tech-card {
+            padding: 28px 20px; text-align: center;
+            display: flex; flex-direction: column; align-items: center; gap: 14px;
+          }
+          .pdp-tech-logo {
+            width: 64px; height: 64px;
+            background: #fff; border-radius: 14px;
+            display: flex; align-items: center; justify-content: center;
+            padding: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+          }
+          .pdp-tech-name { font-size: 14px; }
           @media (max-width: 900px) {
             [data-testid="project-detail-modal"] .pdp-about-card { padding: 36px 24px !important; }
             [data-testid="project-detail-modal"] .pdp-about-grid {
               display: grid !important; grid-template-columns: 1fr !important; gap: 32px !important;
             }
             [data-testid="project-detail-modal"] .pdp-tech-grid {
-              display: grid !important; grid-template-columns: repeat(3, 1fr) !important; gap: 12px !important;
+              grid-template-columns: repeat(4, 1fr) !important; gap: 10px !important;
             }
+            [data-testid="project-detail-modal"] .pdp-tech-card { padding: 16px 8px !important; gap: 8px !important; }
+            [data-testid="project-detail-modal"] .pdp-tech-logo {
+              width: 48px !important; height: 48px !important; border-radius: 10px !important; padding: 8px !important;
+            }
+            [data-testid="project-detail-modal"] .pdp-tech-name { font-size: 11px !important; }
             [data-testid="project-detail-modal"] .pdp-vorgang { padding: 64px 0 !important; }
             [data-testid="project-detail-modal"] .pdp-timeline-line { left: 22px !important; }
             [data-testid="project-detail-modal"] .pdp-timeline-row {
@@ -646,8 +655,12 @@ const ProjectDetailModal = ({ slug, onClose, onNavigate }) => {
             [data-testid="project-detail-modal"] .pdp-title { font-size: clamp(26px, 9vw, 38px) !important; }
             [data-testid="project-detail-modal"] .pdp-about-card { padding: 28px 20px !important; }
             [data-testid="project-detail-modal"] .pdp-about-card h2 { font-size: 26px !important; line-height: 1.2 !important; }
-            [data-testid="project-detail-modal"] .pdp-tech-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
-            [data-testid="project-detail-modal"] .pdp-tech-grid > div { padding: 20px 14px !important; }
+            [data-testid="project-detail-modal"] .pdp-tech-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 8px !important; }
+            [data-testid="project-detail-modal"] .pdp-tech-card { padding: 14px 6px !important; gap: 6px !important; }
+            [data-testid="project-detail-modal"] .pdp-tech-logo {
+              width: 40px !important; height: 40px !important; border-radius: 8px !important; padding: 6px !important;
+            }
+            [data-testid="project-detail-modal"] .pdp-tech-name { font-size: 10px !important; }
             [data-testid="project-detail-modal"] .pdp-vorgang { padding: 56px 0 !important; }
             [data-testid="project-detail-modal"] .pdp-timeline-line { left: 18px !important; }
             [data-testid="project-detail-modal"] .pdp-timeline-row { grid-template-columns: 40px 1fr !important; gap: 14px !important; }
