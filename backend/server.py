@@ -425,6 +425,17 @@ _SITEMAP_STATIC = [
 ]
 
 
+# api.zebick.com has no public content of its own (pure backend, everything
+# lives under /api/...) — Search Console kept trying to crawl/index the bare
+# domain root and reporting it as a 404. This tells crawlers hitting the API
+# domain directly to stay away entirely; the real site's robots.txt (which
+# allows crawling) lives separately at frontend/public/robots.txt.
+@app.get("/robots.txt")
+async def api_robots_txt():
+    from fastapi import Response
+    return Response(content="User-agent: *\nDisallow: /\n", media_type="text/plain")
+
+
 @app.get("/sitemap.xml")
 async def dynamic_sitemap():
     from fastapi import Response
